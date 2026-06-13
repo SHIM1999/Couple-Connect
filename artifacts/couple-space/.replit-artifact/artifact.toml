@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Our Space"
+version = "1.0.0"
+id = "artifacts/couple-space"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20958
+
+[services.development]
+run = "pnpm --filter @workspace/couple-space run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/couple-space", "run", "build" ]
+publicDir = "artifacts/couple-space/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20958"
+BASE_PATH = "/"

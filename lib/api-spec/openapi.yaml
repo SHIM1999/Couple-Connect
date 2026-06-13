@@ -3,20 +3,34 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Couples shared planning app API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: profile
+    description: Couple profile & status
+  - name: todos
+    description: Shared to-do list
+  - name: goals
+    description: Couple goals
+  - name: wishlist
+    description: Wish list items
+  - name: bucketlist
+    description: Bucket list items
+  - name: events
+    description: Calendar events
+  - name: summary
+    description: Dashboard summary
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +38,752 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── Profile / Status ──────────────────────────────────────────────────────
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get couple profile
+      responses:
+        "200":
+          description: Couple profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoupleProfile"
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update couple profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoupleProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoupleProfile"
+
+  /profile/status/{person}:
+    patch:
+      operationId: updateStatus
+      tags: [profile]
+      summary: Update a person's status (person = "partner1" | "partner2")
+      parameters:
+        - name: person
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoupleProfile"
+
+  # ── To-dos ───────────────────────────────────────────────────────────────
+  /todos:
+    get:
+      operationId: listTodos
+      tags: [todos]
+      summary: List all todos
+      responses:
+        "200":
+          description: List of todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Todo"
+    post:
+      operationId: createTodo
+      tags: [todos]
+      summary: Create a todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoInput"
+      responses:
+        "201":
+          description: Created todo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+
+  /todos/{id}:
+    patch:
+      operationId: updateTodo
+      tags: [todos]
+      summary: Update a todo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoUpdate"
+      responses:
+        "200":
+          description: Updated todo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+    delete:
+      operationId: deleteTodo
+      tags: [todos]
+      summary: Delete a todo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Goals ─────────────────────────────────────────────────────────────────
+  /goals:
+    get:
+      operationId: listGoals
+      tags: [goals]
+      summary: List all goals
+      responses:
+        "200":
+          description: List of goals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Goal"
+    post:
+      operationId: createGoal
+      tags: [goals]
+      summary: Create a goal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoalInput"
+      responses:
+        "201":
+          description: Created goal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Goal"
+
+  /goals/{id}:
+    patch:
+      operationId: updateGoal
+      tags: [goals]
+      summary: Update a goal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoalUpdate"
+      responses:
+        "200":
+          description: Updated goal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Goal"
+    delete:
+      operationId: deleteGoal
+      tags: [goals]
+      summary: Delete a goal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Wish list ─────────────────────────────────────────────────────────────
+  /wishlist:
+    get:
+      operationId: listWishlist
+      tags: [wishlist]
+      summary: List wish list items
+      responses:
+        "200":
+          description: List of wish list items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WishItem"
+    post:
+      operationId: createWishItem
+      tags: [wishlist]
+      summary: Add a wish item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WishItemInput"
+      responses:
+        "201":
+          description: Created wish item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WishItem"
+
+  /wishlist/{id}:
+    patch:
+      operationId: updateWishItem
+      tags: [wishlist]
+      summary: Update a wish item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WishItemUpdate"
+      responses:
+        "200":
+          description: Updated wish item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WishItem"
+    delete:
+      operationId: deleteWishItem
+      tags: [wishlist]
+      summary: Delete a wish item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Bucket list ───────────────────────────────────────────────────────────
+  /bucketlist:
+    get:
+      operationId: listBucketList
+      tags: [bucketlist]
+      summary: List bucket list items
+      responses:
+        "200":
+          description: List of bucket list items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BucketItem"
+    post:
+      operationId: createBucketItem
+      tags: [bucketlist]
+      summary: Add a bucket list item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BucketItemInput"
+      responses:
+        "201":
+          description: Created bucket item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BucketItem"
+
+  /bucketlist/{id}:
+    patch:
+      operationId: updateBucketItem
+      tags: [bucketlist]
+      summary: Update a bucket list item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BucketItemUpdate"
+      responses:
+        "200":
+          description: Updated bucket item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BucketItem"
+    delete:
+      operationId: deleteBucketItem
+      tags: [bucketlist]
+      summary: Delete a bucket list item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Calendar events ───────────────────────────────────────────────────────
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      summary: List calendar events
+      parameters:
+        - name: month
+          in: query
+          schema:
+            type: integer
+        - name: year
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarEvent"
+    post:
+      operationId: createEvent
+      tags: [events]
+      summary: Create a calendar event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalendarEventInput"
+      responses:
+        "201":
+          description: Created event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalendarEvent"
+
+  /events/{id}:
+    patch:
+      operationId: updateEvent
+      tags: [events]
+      summary: Update a calendar event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalendarEventUpdate"
+      responses:
+        "200":
+          description: Updated event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalendarEvent"
+    delete:
+      operationId: deleteEvent
+      tags: [events]
+      summary: Delete a calendar event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Summary ───────────────────────────────────────────────────────────────
+  /summary:
+    get:
+      operationId: getSummary
+      tags: [summary]
+      summary: Get dashboard summary counts
+      responses:
+        "200":
+          description: Summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    # ── Profile ─────────────────────────────────────────────────────────────
+    CoupleProfile:
+      type: object
+      required: [id, partner1Name, partner2Name, partner1Status, partner2Status, anniversaryDate]
+      properties:
+        id:
+          type: integer
+        partner1Name:
+          type: string
+        partner2Name:
+          type: string
+        partner1Status:
+          type: string
+        partner2Status:
+          type: string
+        partner1Emoji:
+          type: ["string", "null"]
+        partner2Emoji:
+          type: ["string", "null"]
+        anniversaryDate:
+          type: ["string", "null"]
+        coupleTitle:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    CoupleProfileUpdate:
+      type: object
+      properties:
+        partner1Name:
+          type: string
+        partner2Name:
+          type: string
+        partner1Emoji:
+          type: string
+        partner2Emoji:
+          type: string
+        anniversaryDate:
+          type: string
+        coupleTitle:
+          type: string
+
+    StatusUpdate:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+        emoji:
+          type: string
+
+    # ── Todos ────────────────────────────────────────────────────────────────
+    Todo:
+      type: object
+      required: [id, title, completed, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: boolean
+        note:
+          type: ["string", "null"]
+        addedBy:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    TodoInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        note:
+          type: string
+        addedBy:
+          type: string
+
+    TodoUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        completed:
+          type: boolean
+        note:
+          type: string
+        addedBy:
+          type: string
+
+    # ── Goals ────────────────────────────────────────────────────────────────
+    Goal:
+      type: object
+      required: [id, title, completed, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: boolean
+        note:
+          type: ["string", "null"]
+        targetDate:
+          type: ["string", "null"]
+        category:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    GoalInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        note:
+          type: string
+        targetDate:
+          type: string
+        category:
+          type: string
+
+    GoalUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        completed:
+          type: boolean
+        note:
+          type: string
+        targetDate:
+          type: string
+        category:
+          type: string
+
+    # ── Wish list ────────────────────────────────────────────────────────────
+    WishItem:
+      type: object
+      required: [id, title, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        note:
+          type: ["string", "null"]
+        link:
+          type: ["string", "null"]
+        addedBy:
+          type: ["string", "null"]
+        purchased:
+          type: boolean
+        createdAt:
+          type: string
+
+    WishItemInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        note:
+          type: string
+        link:
+          type: string
+        addedBy:
+          type: string
+
+    WishItemUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        note:
+          type: string
+        link:
+          type: string
+        addedBy:
+          type: string
+        purchased:
+          type: boolean
+
+    # ── Bucket list ──────────────────────────────────────────────────────────
+    BucketItem:
+      type: object
+      required: [id, title, completed, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: boolean
+        note:
+          type: ["string", "null"]
+        targetDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    BucketItemInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        note:
+          type: string
+        targetDate:
+          type: string
+
+    BucketItemUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        completed:
+          type: boolean
+        note:
+          type: string
+        targetDate:
+          type: string
+
+    # ── Calendar events ──────────────────────────────────────────────────────
+    CalendarEvent:
+      type: object
+      required: [id, title, date, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        date:
+          type: string
+        note:
+          type: ["string", "null"]
+        emoji:
+          type: ["string", "null"]
+        isAnniversary:
+          type: boolean
+        createdAt:
+          type: string
+
+    CalendarEventInput:
+      type: object
+      required: [title, date]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        date:
+          type: string
+        note:
+          type: string
+        emoji:
+          type: string
+        isAnniversary:
+          type: boolean
+
+    CalendarEventUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        date:
+          type: string
+        note:
+          type: string
+        emoji:
+          type: string
+        isAnniversary:
+          type: boolean
+
+    # ── Dashboard summary ────────────────────────────────────────────────────
+    DashboardSummary:
+      type: object
+      required: [todoCount, todoDoneCount, goalCount, goalDoneCount, wishlistCount, bucketCount, bucketDoneCount, upcomingEvents]
+      properties:
+        todoCount:
+          type: integer
+        todoDoneCount:
+          type: integer
+        goalCount:
+          type: integer
+        goalDoneCount:
+          type: integer
+        wishlistCount:
+          type: integer
+        bucketCount:
+          type: integer
+        bucketDoneCount:
+          type: integer
+        upcomingEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/CalendarEvent"
