@@ -1,0 +1,355 @@
+I want to redesign and complete my app “Couple Connect” with a retro pixel-art romantic game style.
+
+IMPORTANT:
+- Do not rebuild everything from zero unless necessary.
+- Improve the current project structure and UI.
+- Keep it mobile-first and portfolio/demo ready.
+- The app should feel like a cute old pixel game, but still practical and modern enough to use.
+- Use the uploaded pixel-art couple image as the MAIN VISUAL IDENTITY of the app.
+- Do NOT duplicate the same image in multiple places unnecessarily.
+- Use it mainly as the main menu / landing screen hero image.
+- The design should feel warm, romantic, nostalgic, and game-like.
+
+APP CONCEPT:
+Couple Connect is a private couple planning app where two people can share:
+- goals
+- to-dos
+- wishes
+- bucket list
+- events/dates
+- shared status / anniversary
+- invite each other through a link
+
+==================================================
+1. DESIGN STYLE / VISUAL DIRECTION
+==================================================
+
+I want the entire app styled like an old pixel-art romance game.
+
+Main visual style:
+- pixel-art inspired
+- warm sunset colors
+- retro game UI
+- soft romance feeling
+- slightly nostalgic
+- cute but not childish
+- use pixel borders / pixel shadows / retro panels / retro buttons
+- use rounded retro game panels where needed
+- use pixel-style icons where possible
+- use fonts that give retro/pixel feeling, but still keep readability
+
+Color palette inspiration:
+- sunset orange
+- pink
+- coral
+- peach
+- purple dusk
+- dark navy
+- warm brown
+- cream / beige
+- soft green accents
+
+The uploaded pixel-art couple image should define the overall mood:
+- cozy
+- romantic
+- park bench
+- sunset
+- dreamy
+- “together” feeling
+
+==================================================
+2. MAIN MENU / LANDING SCREEN
+==================================================
+
+I want the MAIN MENU to be based on the uploaded pixel-art image.
+
+Requirements:
+- Use the uploaded image as the main background/hero artwork on the home/main menu screen.
+- The image should be displayed clearly and beautifully.
+- Add a subtle dark/gradient overlay if needed so UI text is readable.
+- Do not clutter the image too much.
+- Place UI panels/tabs over the image in a clean way.
+
+The main menu should show:
+- App name: Couple Connect
+- Small subtitle/tagline:
+  “Plan together. Grow together.”
+  or
+  “A little world for two.”
+- Current anniversary / together-day counter
+- Status of “Me” and “My Love”
+- Quick overview cards/tabs over the main menu
+
+Suggested info shown on main menu:
+- Anniversary / D+ counter
+- “Me” status
+- “My Love” status
+- Next upcoming event
+- Short summary of goals/todos
+
+Keep the screen beautiful and simple.
+
+==================================================
+3. LOADING SCREEN
+==================================================
+
+Add a stylish loading / splash screen before the app opens.
+
+Requirements:
+- Loading screen should appear when the app first opens.
+- Use the pixel-art romantic style.
+- Show app name:
+  “Couple Connect”
+- Show the pixel-art theme clearly.
+- Add loading bar progressing from 0% to 100%.
+- Show percentage text changing as it loads.
+- Example:
+  Loading... 0%
+  Loading... 27%
+  Loading... 59%
+  Loading... 100%
+
+Purpose:
+- It should help hide/preload assets and make the app feel like a real game/app.
+- The loading bar animation should feel smooth.
+- After reaching 100%, transition nicely to the main menu.
+
+Add subtle effects if easy:
+- blinking “Loading...”
+- soft fade in/out
+- pixel shimmer
+- tiny heart animation
+But do not overdo it.
+
+==================================================
+4. NAVIGATION BAR
+==================================================
+
+I want ONLY 5 buttons in the bottom navigation bar.
+
+Requirements:
+- Fixed bottom navigation bar
+- Pixel/retro styled
+- Exactly 5 buttons
+- The center/main button should be the default selected screen
+- The center button should be circular and slightly raised/outside above the navbar
+- Two buttons on the left
+- Two buttons on the right
+- Total = 5
+
+Suggested nav items:
+1. Dates
+2. To-Dos
+3. Home (center, raised circle, default selected)
+4. Goals
+5. More
+
+Alternative if needed:
+1. Dates
+2. Todos
+3. Home
+4. Wishes
+5. More
+
+The “More” page can contain:
+- Bucket List
+- Memories
+- Settings
+- Invite
+- Status
+
+Navbar style:
+- pixel-inspired
+- soft shadows
+- retro panel
+- center button highlighted
+- active tab clearly visible
+
+==================================================
+5. HOME / MAIN MENU CONTENT
+==================================================
+
+On the Home/Main Menu screen, keep things romantic and clean.
+
+Show:
+- uploaded pixel-art couple image as main hero
+- app name
+- anniversary / D+ counter
+- “Me” status
+- “My Love” status
+- quick buttons or tabs to important sections
+- short panel for next event
+- short panel for current goals/todos progress
+
+Suggested sections:
+- Anniversary: “D+___”
+- Me status: custom small text
+- My Love status: custom small text
+- Upcoming Event
+- To-Do summary
+- Goal summary
+
+Small romantic touches are welcome:
+- little heart icon
+- pixel-style mini labels
+- soft blinking details
+- cute retro UI panel titles
+
+==================================================
+6. INVITATION THROUGH LINK
+==================================================
+
+I want the couple connection/invitation to work through a link.
+
+Requirements:
+- One user can generate/share an invite link.
+- The other person can open the link and join/connect.
+- Keep this simple and practical.
+- If there is no real backend yet, create the structure/UI flow first.
+- If possible, support:
+  - generate unique invite token or room id
+  - copy invite link button
+  - join by opening the link
+- Add a small Invite / Connect page or section
+
+Suggested flow:
+- User A creates shared space
+- App generates invite link
+- User A sends link
+- User B opens link
+- User B joins the shared couple space
+
+If full backend is too heavy for now:
+- build the UI/UX and logical structure
+- prepare the code structure for future real backend integration
+
+==================================================
+7. PAGES / FEATURES
+==================================================
+
+Complete the app with these pages/features:
+
+A. Home
+- main menu screen
+- romantic hero image
+- anniversary
+- status
+- quick summaries
+
+B. Dates / Events
+- add upcoming events
+- title
+- date
+- short description
+- display events nicely in retro cards
+
+C. To-Dos
+- add todo
+- mark complete
+- delete
+- show total / done count
+
+D. Goals
+- add goal
+- mark reached
+- show progress
+- optional target date
+
+E. More
+This page can include:
+- Wishes
+- Bucket List
+- Memories
+- Invite / Connect
+- Settings
+
+Optional:
+- Wishes page: small list of wishes
+- Bucket list page: shared future plans
+- Memories page: short text memories
+
+Keep all of them styled consistently with retro pixel UI.
+
+==================================================
+8. LOGO / BRANDING
+==================================================
+
+I first thought of a logo, but now I want the main identity to come from the uploaded pixel-art image.
+
+So:
+- do not make a duplicated big logo image
+- instead, use the pixel-art couple artwork as the main brand/hero image
+
+But I still want a small app logo/icon for headers/favicon if possible.
+
+Create a SIMPLE mini icon inspired by the image:
+- small pixel heart
+- or pixel couple/heart badge
+- or pixel bench/heart symbol
+- minimal and clean
+- should work as a small icon only
+
+Use this small icon in:
+- header
+- favicon if possible
+- splash/loading screen
+
+==================================================
+9. UI / UX DETAILS
+==================================================
+
+Please improve the design quality overall.
+
+Requirements:
+- smooth page transitions if easy
+- clean spacing
+- mobile-first layout
+- no broken buttons
+- readable text over image
+- pleasant animations
+- retro but usable
+- use cards/panels with pixel borders or subtle game-style frames
+- maintain good contrast
+- avoid messy overcrowded screen
+
+Empty state examples:
+- “No events yet. Plan your next little story.”
+- “No todos yet. Add something to do together.”
+- “No goals yet. Start with one shared dream.”
+- “No wishes yet. Write something your heart wants.”
+- “No memories yet. Save a moment worth keeping.”
+
+==================================================
+10. TECHNICAL / IMPLEMENTATION NOTES
+==================================================
+
+Please:
+- keep the app mobile responsive
+- use local storage for MVP data if database is not already set up
+- preserve data after refresh
+- preload the main image for the loading screen/home
+- make the loading screen transition into the home screen
+- make the center navbar Home button open by default
+- ensure all navigation works properly
+- do not expose unnecessary complexity
+
+If possible:
+- structure components cleanly
+- explain what files were changed
+- keep code maintainable
+
+==================================================
+11. FINAL RESULT I WANT
+==================================================
+
+I want this app to feel like:
+- a private mini world for two people
+- a romantic pixel-art game interface
+- a practical couple planner
+- something unique enough for my portfolio
+- something I can publish through a link and share easily
+
+Please implement this carefully and explain:
+1. what you changed
+2. what remains unfinished
+3. what can be improved next

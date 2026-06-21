@@ -1,12 +1,11 @@
 import { useState, useMemo } from "react";
 import { useListEvents, useCreateEvent, useDeleteEvent, getListEventsQueryKey, getGetSummaryQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Plus, Trash2, CalendarDays, Star } from "lucide-react";
+import { Plus, Trash2, CalendarDays } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function CalendarPage() {
@@ -33,7 +32,7 @@ export default function CalendarPage() {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListEventsQueryKey() });
           queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-          toast({ title: "Event removed" });
+          toast({ title: "Event removed!" });
         }
       }
     );
@@ -53,13 +52,12 @@ export default function CalendarPage() {
           setNewTitle("");
           setNewDate("");
           setNewNote("");
-          toast({ title: "Event added to calendar" });
+          toast({ title: "Event saved!" });
         }
       }
     );
   };
 
-  // Group events by date
   const eventsByDate = useMemo(() => {
     if (!events) return {};
     return events.reduce((acc, event) => {
@@ -70,35 +68,34 @@ export default function CalendarPage() {
     }, {} as Record<string, typeof events>);
   }, [events]);
 
-  // Sort dates
   const sortedDates = Object.keys(eventsByDate).sort();
 
   return (
     <div className="p-6 pb-24">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-serif text-primary">Calendar</h1>
-          <p className="text-muted-foreground mt-1 capitalize font-medium tracking-wide text-sm">
-            {new Date(currentYear, currentMonth - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}
+          <h1 className="font-pixel text-xl text-[#FF7043] drop-shadow-md">TIMELINE</h1>
+          <p className="font-pixel text-[8px] text-[#FFF8F0] mt-3">
+            {new Date(currentYear, currentMonth - 1).toLocaleString('default', { month: 'long', year: 'numeric' }).toUpperCase()}
           </p>
         </div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button size="icon" className="rounded-full h-12 w-12 shadow-lg hover-elevate shrink-0">
-              <Plus className="w-5 h-5" />
+            <Button size="icon" className="pixel-btn w-12 h-12 rounded-full flex items-center justify-center bg-[#FF6B81]">
+              <Plus className="w-6 h-6" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md rounded-3xl">
+          <DialogContent className="sm:max-w-md pixel-card p-6 border-4">
             <DialogHeader>
-              <DialogTitle className="font-serif text-xl text-primary">Add an Event</DialogTitle>
+              <DialogTitle className="font-pixel text-sm text-[#1A1035] mb-4">NEW EVENT</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleAdd} className="space-y-4 mt-4">
+            <form onSubmit={handleAdd} className="space-y-4">
               <div>
                 <Input 
-                  placeholder="What's happening?" 
+                  placeholder="Event name..." 
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="bg-secondary/50 border-transparent rounded-xl"
+                  className="pixel-border font-sans font-medium text-sm"
                   autoFocus
                 />
               </div>
@@ -107,30 +104,30 @@ export default function CalendarPage() {
                   type="date"
                   value={newDate}
                   onChange={(e) => setNewDate(e.target.value)}
-                  className="bg-secondary/50 border-transparent rounded-xl"
+                  className="pixel-border font-sans text-sm"
                   required
                 />
               </div>
               <div>
                 <Input 
-                  placeholder="Details? (optional)" 
+                  placeholder="Details (optional)" 
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
-                  className="bg-secondary/50 border-transparent rounded-xl"
+                  className="pixel-border font-sans text-sm"
                 />
               </div>
-              <Button type="submit" className="w-full rounded-xl" disabled={!newTitle.trim() || !newDate || createEvent.isPending}>
-                {createEvent.isPending ? "Adding..." : "Add Event"}
+              <Button type="submit" className="w-full pixel-btn h-12 text-xs" disabled={!newTitle.trim() || !newDate || createEvent.isPending}>
+                {createEvent.isPending ? "SAVING..." : "SAVE EVENT"}
               </Button>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      <div className="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex gap-2 mb-8">
         <Button 
           variant="outline" 
-          className="rounded-full bg-secondary/30 border-transparent"
+          className="flex-1 pixel-btn bg-[#1A1035] text-[#FFF8F0] text-[8px]"
           onClick={() => {
             if (currentMonth === 1) {
               setCurrentMonth(12);
@@ -140,11 +137,11 @@ export default function CalendarPage() {
             }
           }}
         >
-          Previous
+          &lt; PREV
         </Button>
         <Button 
           variant="outline" 
-          className="rounded-full bg-secondary/30 border-transparent"
+          className="flex-1 pixel-btn bg-[#1A1035] text-[#FFF8F0] text-[8px]"
           onClick={() => {
             if (currentMonth === 12) {
               setCurrentMonth(1);
@@ -154,58 +151,58 @@ export default function CalendarPage() {
             }
           }}
         >
-          Next Month
+          NEXT &gt;
         </Button>
       </div>
 
       {isLoading ? (
         <div className="space-y-6">
-          <Skeleton className="h-32 w-full rounded-2xl" />
-          <Skeleton className="h-32 w-full rounded-2xl" />
+          <Skeleton className="h-24 w-full rounded pixel-card" />
+          <Skeleton className="h-24 w-full rounded pixel-card" />
         </div>
       ) : sortedDates.length === 0 ? (
-        <div className="text-center py-12">
-          <CalendarDays className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-muted-foreground font-medium">No events this month.</p>
-          <p className="text-sm text-muted-foreground mt-1">Plan a date night!</p>
+        <div className="text-center py-16 pixel-card border-dashed">
+          <CalendarDays className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+          <p className="font-pixel text-[9px] text-muted-foreground leading-loose">NO EVENTS FOUND.<br/>PLAN A DATE!</p>
         </div>
       ) : (
-        <div className="space-y-8 animate-stagger">
+        <div className="space-y-6 animate-stagger relative">
+          <div className="absolute left-6 top-0 bottom-0 w-[4px] bg-[#6D3B2E] rounded-full z-0" />
+          
           {sortedDates.map((date) => {
             const dateObj = new Date(date);
-            // Ensure local timezone parsing doesn't shift the date if it's YYYY-MM-DD
             const localDate = new Date(dateObj.getTime() + dateObj.getTimezoneOffset() * 60000);
             
             return (
-              <div key={date} className="relative pl-12">
-                <div className="absolute left-0 top-1 w-10 text-center">
-                  <span className="block text-xs font-bold text-primary uppercase">{localDate.toLocaleDateString('en-US', { weekday: 'short' })}</span>
-                  <span className="block text-xl font-serif text-foreground">{localDate.getDate()}</span>
+              <div key={date} className="relative z-10 flex gap-4 items-start">
+                <div className="w-12 h-12 pixel-card bg-[#FF7043] border-[#6D3B2E] text-[#FFF8F0] shrink-0 flex flex-col items-center justify-center rounded">
+                  <span className="font-pixel text-[8px]">{localDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()}</span>
+                  <span className="font-pixel text-lg mt-1">{localDate.getDate()}</span>
                 </div>
                 
-                <div className="space-y-3">
+                <div className="flex-1 space-y-3 pt-1">
                   {eventsByDate[date].map(event => (
-                    <Card key={event.id} className="border-transparent bg-secondary/40 shadow-none">
-                      <CardContent className="p-4 flex gap-4">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            {event.isAnniversary && <Star className="w-4 h-4 text-accent-foreground fill-current" />}
-                            <h3 className="font-medium text-foreground">{event.title}</h3>
-                          </div>
-                          {event.note && (
-                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{event.note}</p>
-                          )}
+                    <div key={event.id} className="pixel-card p-4 flex gap-3 relative overflow-hidden">
+                      {event.isAnniversary && (
+                        <div className="absolute top-0 right-0 bg-[#FF6B81] text-[#FFF8F0] px-2 py-1 font-pixel text-[6px] border-b-2 border-l-2 border-[#6D3B2E]">
+                          ANNIVERSARY
                         </div>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          onClick={() => handleDelete(event.id)}
-                          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 -mr-2 -mt-2 shrink-0"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </CardContent>
-                    </Card>
+                      )}
+                      <div className="flex-1 min-w-0 pr-6">
+                        <h3 className="font-sans font-bold text-sm tracking-wide text-card-foreground">{event.title}</h3>
+                        {event.note && (
+                          <p className="text-xs font-medium text-muted-foreground mt-1">{event.note}</p>
+                        )}
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => handleDelete(event.id)}
+                        className="text-muted-foreground hover:text-destructive hover:bg-transparent shrink-0 h-8 w-8 -mr-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   ))}
                 </div>
               </div>

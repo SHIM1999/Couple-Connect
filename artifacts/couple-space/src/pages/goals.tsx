@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useListGoals, useCreateGoal, useUpdateGoal, useDeleteGoal, getListGoalsQueryKey, getGetSummaryQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Plus, Trash2, Target, CheckCircle2 } from "lucide-react";
+import { Plus, Trash2, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function GoalsPage() {
@@ -45,7 +44,7 @@ export default function GoalsPage() {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
           queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-          toast({ title: "Goal deleted" });
+          toast({ title: "Goal deleted!" });
         }
       }
     );
@@ -65,7 +64,7 @@ export default function GoalsPage() {
           setNewTitle("");
           setNewNote("");
           setNewCategory("");
-          toast({ title: "Goal added" });
+          toast({ title: "Goal set!" });
         }
       }
     );
@@ -74,55 +73,55 @@ export default function GoalsPage() {
   if (isLoading) {
     return (
       <div className="p-6 space-y-4">
-        <h1 className="text-3xl font-serif text-primary mb-6">Our Goals</h1>
-        <Skeleton className="h-24 w-full rounded-2xl" />
-        <Skeleton className="h-24 w-full rounded-2xl" />
+        <h1 className="font-pixel text-xl text-[#FF7043] mb-8">MILESTONES</h1>
+        <Skeleton className="h-28 w-full rounded pixel-card" />
+        <Skeleton className="h-28 w-full rounded pixel-card" />
       </div>
     );
   }
 
   return (
     <div className="p-6 pb-24">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-serif text-primary">Our Goals</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-pixel text-xl text-[#FF7043] drop-shadow-md">MILESTONES</h1>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button size="icon" className="rounded-full h-12 w-12 shadow-lg hover-elevate">
-              <Plus className="w-5 h-5" />
+            <Button size="icon" className="pixel-btn w-12 h-12 rounded-full flex items-center justify-center bg-[#FFAB91] text-[#1A1035]">
+              <Plus className="w-6 h-6" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md rounded-3xl">
+          <DialogContent className="sm:max-w-md pixel-card p-6 border-4">
             <DialogHeader>
-              <DialogTitle className="font-serif text-xl text-primary">Add a Shared Goal</DialogTitle>
+              <DialogTitle className="font-pixel text-sm text-[#1A1035] mb-4">SET NEW GOAL</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleAdd} className="space-y-4 mt-4">
+            <form onSubmit={handleAdd} className="space-y-4">
               <div>
                 <Input 
-                  placeholder="What's our new goal?" 
+                  placeholder="What's the goal?" 
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="bg-secondary/50 border-transparent rounded-xl"
+                  className="pixel-border font-sans font-medium text-sm"
                   autoFocus
                 />
               </div>
               <div>
                 <Input 
-                  placeholder="Category (e.g., Financial, Travel)" 
+                  placeholder="Category (e.g., Travel)" 
                   value={newCategory}
                   onChange={(e) => setNewCategory(e.target.value)}
-                  className="bg-secondary/50 border-transparent rounded-xl"
+                  className="pixel-border font-sans text-sm"
                 />
               </div>
               <div>
                 <Input 
-                  placeholder="Extra notes? (optional)" 
+                  placeholder="Details (optional)" 
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
-                  className="bg-secondary/50 border-transparent rounded-xl"
+                  className="pixel-border font-sans text-sm"
                 />
               </div>
-              <Button type="submit" className="w-full rounded-xl" disabled={!newTitle.trim() || createGoal.isPending}>
-                {createGoal.isPending ? "Adding..." : "Add Goal"}
+              <Button type="submit" className="w-full pixel-btn h-12 text-xs" disabled={!newTitle.trim() || createGoal.isPending}>
+                {createGoal.isPending ? "SAVING..." : "COMMIT GOAL"}
               </Button>
             </form>
           </DialogContent>
@@ -130,49 +129,51 @@ export default function GoalsPage() {
       </div>
 
       {!goals || goals.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground font-medium">No shared goals yet.</p>
-          <p className="text-sm text-muted-foreground mt-1">Dream something up together.</p>
+        <div className="text-center py-16 pixel-card border-dashed">
+          <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+          <p className="font-pixel text-[9px] text-muted-foreground leading-loose">NO GOALS SET YET.<br/>DREAM BIG!</p>
         </div>
       ) : (
-        <div className="space-y-4 animate-stagger">
+        <div className="space-y-6 animate-stagger">
           {goals.map((goal) => (
-            <Card key={goal.id} className={`border-transparent transition-all duration-500 overflow-hidden ${goal.completed ? 'bg-secondary/20 scale-[0.98] opacity-80' : 'bg-secondary/50'}`}>
-              <CardContent className="p-5 flex gap-4">
+            <div key={goal.id} className={`pixel-card p-5 relative overflow-hidden transition-all duration-300 ${goal.completed ? 'bg-[#4CAF78] text-[#FFF8F0] border-[#1A1035]' : 'bg-[#FFF8F0]'}`}>
+              {/* Progress Bar Feel Background for completed */}
+              {goal.completed && (
+                <div className="absolute inset-0 bg-[#FF7043] w-full transform origin-left transition-transform duration-500 pixel-shimmer z-0 opacity-20" />
+              )}
+              
+              <div className="relative z-10 flex gap-4">
                 <button 
                   onClick={() => handleToggle(goal.id, goal.completed)}
-                  className={`mt-1 shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${goal.completed ? 'bg-primary text-primary-foreground' : 'bg-background text-muted-foreground hover:bg-primary/20 hover:text-primary'}`}
+                  className={`w-10 h-10 shrink-0 rounded pixel-border flex items-center justify-center transition-colors ${goal.completed ? 'bg-[#FFAB91] text-[#1A1035]' : 'bg-[#1A1035] text-[#FFF8F0] hover:bg-[#FF7043]'}`}
                 >
-                  {goal.completed ? <CheckCircle2 className="w-5 h-5" /> : <Target className="w-5 h-5" />}
+                  <Trophy className="w-5 h-5" />
                 </button>
                 <div className="flex-1 min-w-0">
                   {goal.category && (
-                    <span className="inline-block px-2 py-0.5 rounded-full bg-background text-[10px] font-medium text-primary uppercase tracking-wider mb-2">
+                    <span className="inline-block px-2 py-1 bg-[#1A1035] text-[#FFF8F0] font-pixel text-[6px] rounded-sm pixel-border mb-3">
                       {goal.category}
                     </span>
                   )}
-                  <h3 className={`font-serif text-lg leading-tight transition-all ${goal.completed ? 'text-muted-foreground' : 'text-foreground'}`}>
+                  <h3 className={`font-sans font-bold text-lg tracking-wide leading-tight ${goal.completed ? 'text-[#1A1035]' : 'text-card-foreground'}`}>
                     {goal.title}
                   </h3>
                   {goal.note && (
-                    <p className={`text-sm mt-1 line-clamp-2 ${goal.completed ? 'text-muted-foreground/50' : 'text-muted-foreground'}`}>
+                    <p className={`text-sm font-medium mt-1 line-clamp-2 ${goal.completed ? 'text-[#1A1035]/80' : 'text-muted-foreground'}`}>
                       {goal.note}
                     </p>
-                  )}
-                  {goal.targetDate && (
-                    <p className="text-xs text-muted-foreground/70 mt-3">Target: {new Date(goal.targetDate).toLocaleDateString()}</p>
                   )}
                 </div>
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={() => handleDelete(goal.id)}
-                  className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0"
+                  className={`${goal.completed ? 'text-[#1A1035] hover:bg-[#1A1035]/20' : 'text-muted-foreground hover:bg-destructive/10 hover:text-destructive'} shrink-0 h-8 w-8`}
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       )}

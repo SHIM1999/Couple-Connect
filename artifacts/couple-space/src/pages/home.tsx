@@ -2,11 +2,10 @@ import { useState } from "react";
 import { useGetProfile, useGetSummary, useUpdateStatus, getGetProfileQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { CheckSquare, Target, Gift, Map, Heart, Star, CalendarDays } from "lucide-react";
+import { CheckSquare, Target, CalendarDays, Edit2 } from "lucide-react";
 import { Link } from "wouter";
+import heroImg from "@assets/ChatGPT_Image_2026년_6월_22일_오전_08_45_49_1782085558954.png";
 
 export default function Home() {
   const { data: profile, isLoading: profileLoading } = useGetProfile();
@@ -34,44 +33,65 @@ export default function Home() {
     );
   };
 
+  const getDaysTogether = () => {
+    if (!profile?.anniversaryDate) return null;
+    const start = new Date(profile.anniversaryDate);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - start.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const daysTogether = getDaysTogether();
+
   if (profileLoading || summaryLoading) {
     return (
-      <div className="p-6 space-y-6 animate-pulse">
-        <Skeleton className="h-32 w-full rounded-2xl" />
-        <div className="grid grid-cols-2 gap-4">
-          <Skeleton className="h-24 w-full rounded-2xl" />
-          <Skeleton className="h-24 w-full rounded-2xl" />
-          <Skeleton className="h-24 w-full rounded-2xl" />
-          <Skeleton className="h-24 w-full rounded-2xl" />
-        </div>
+      <div className="w-full min-h-screen bg-background animate-pulse p-6 space-y-6 pt-64">
+        <Skeleton className="h-32 w-full rounded-lg" />
+        <Skeleton className="h-24 w-full rounded-lg" />
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-8 pb-24">
-      <header className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-serif font-medium tracking-tight text-primary">
-            {profile?.coupleTitle || "Our Space"}
+    <div className="w-full pb-24">
+      {/* HERO SECTION */}
+      <div className="relative w-full h-[55vh] min-h-[400px]">
+        <img 
+          src={heroImg} 
+          alt="Couple pixel art" 
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          style={{ imageRendering: 'pixelated' }}
+        />
+        {/* Gradient overlays for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1035]/80 via-transparent to-[#1A1035] pointer-events-none" />
+        
+        <div className="absolute top-0 left-0 right-0 p-6 pt-12 flex flex-col items-center text-center">
+          <h1 className="font-pixel text-xl sm:text-2xl text-[#FF7043] drop-shadow-[2px_2px_0_#1A1035]">
+            {profile?.coupleTitle || "Couple Connect"}
           </h1>
-          <Link href="/settings">
-            <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-primary">
-              <Heart className="w-5 h-5" />
-            </Button>
-          </Link>
+          <p className="mt-3 font-sans font-semibold tracking-widest uppercase text-xs text-[#FFF8F0] opacity-90">
+            Plan together. Grow together.
+          </p>
         </div>
 
-        {profile?.anniversaryDate && (
-          <p className="text-sm font-medium text-accent-foreground flex items-center gap-1.5">
-            <CalendarDays className="w-4 h-4" /> 
-            Anniversary: {new Date(profile.anniversaryDate).toLocaleDateString()}
-          </p>
+        {/* Days Together Badge */}
+        {daysTogether !== null && (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 pixel-card bg-[#FF6B81] text-[#FFF8F0] px-6 py-3 flex items-center gap-3">
+            <span className="text-xl">❤</span>
+            <span className="font-pixel text-lg">D+{daysTogether}</span>
+            <span className="text-xl">❤</span>
+          </div>
         )}
+      </div>
 
+      {/* SCROLLABLE CONTENT */}
+      <div className="px-5 py-6 space-y-6 -mt-4 relative z-10">
+        
+        {/* Status Panels */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <p className="font-medium text-foreground">{profile?.partner1Name || "Partner 1"}</p>
+          {/* Partner 1 */}
+          <div className="pixel-card p-4 flex flex-col">
+            <h3 className="font-pixel text-[10px] text-[#FF7043] mb-2">{profile?.partner1Name || "Player 1"}</h3>
             {editingStatus === "partner1" ? (
               <Input 
                 autoFocus
@@ -79,22 +99,25 @@ export default function Home() {
                 onChange={(e) => setTempStatus(e.target.value)}
                 onBlur={() => handleStatusSave("partner1")}
                 onKeyDown={(e) => e.key === "Enter" && handleStatusSave("partner1")}
-                className="text-sm bg-secondary/50 border-transparent h-8 rounded-lg"
+                className="text-xs bg-[#1A1035] text-[#FFF8F0] pixel-border h-8 mt-auto"
               />
             ) : (
-              <p 
-                className="text-sm text-muted-foreground bg-secondary/30 p-2 rounded-xl cursor-pointer hover:bg-secondary/50 transition-colors line-clamp-2"
+              <div 
+                className="text-xs font-medium text-muted-foreground cursor-pointer flex items-center justify-between group mt-auto"
                 onClick={() => {
                   setTempStatus(profile?.partner1Status || "");
                   setEditingStatus("partner1");
                 }}
               >
-                {profile?.partner1Status || "Set status..."}
-              </p>
+                <span className="line-clamp-2">{profile?.partner1Status || "Set status..."}</span>
+                <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
             )}
           </div>
-          <div className="space-y-2">
-            <p className="font-medium text-foreground">{profile?.partner2Name || "Partner 2"}</p>
+
+          {/* Partner 2 */}
+          <div className="pixel-card p-4 flex flex-col">
+            <h3 className="font-pixel text-[10px] text-[#FF6B81] mb-2">{profile?.partner2Name || "Player 2"}</h3>
             {editingStatus === "partner2" ? (
               <Input 
                 autoFocus
@@ -102,109 +125,82 @@ export default function Home() {
                 onChange={(e) => setTempStatus(e.target.value)}
                 onBlur={() => handleStatusSave("partner2")}
                 onKeyDown={(e) => e.key === "Enter" && handleStatusSave("partner2")}
-                className="text-sm bg-secondary/50 border-transparent h-8 rounded-lg"
+                className="text-xs bg-[#1A1035] text-[#FFF8F0] pixel-border h-8 mt-auto"
               />
             ) : (
-              <p 
-                className="text-sm text-muted-foreground bg-secondary/30 p-2 rounded-xl cursor-pointer hover:bg-secondary/50 transition-colors line-clamp-2"
+              <div 
+                className="text-xs font-medium text-muted-foreground cursor-pointer flex items-center justify-between group mt-auto"
                 onClick={() => {
                   setTempStatus(profile?.partner2Status || "");
                   setEditingStatus("partner2");
                 }}
               >
-                {profile?.partner2Status || "Set status..."}
-              </p>
+                <span className="line-clamp-2">{profile?.partner2Status || "Set status..."}</span>
+                <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
             )}
           </div>
         </div>
-      </header>
 
-      <div className="grid grid-cols-2 gap-4">
-        <Link href="/todos">
-          <Card className="hover-elevate cursor-pointer border-transparent bg-secondary/50">
-            <CardContent className="p-4 flex flex-col items-center justify-center text-center space-y-2 h-32">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+        {/* Summary Tiles */}
+        <div className="grid grid-cols-2 gap-4">
+          <Link href="/todos">
+            <div className="pixel-card p-4 flex items-center gap-3 cursor-pointer hover:bg-[#FFF8F0]/90 active:translate-y-1 transition-transform">
+              <div className="w-10 h-10 rounded bg-[#4CAF78] text-[#FFF8F0] pixel-border flex items-center justify-center shrink-0">
                 <CheckSquare className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-medium text-sm text-foreground">To-Dos</p>
-                <p className="text-xs text-muted-foreground">{summary?.todoDoneCount || 0}/{summary?.todoCount || 0} done</p>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">TODOS</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary?.todoDoneCount || 0}/{summary?.todoCount || 0}</p>
               </div>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link href="/goals">
-          <Card className="hover-elevate cursor-pointer border-transparent bg-secondary/50">
-            <CardContent className="p-4 flex flex-col items-center justify-center text-center space-y-2 h-32">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+            </div>
+          </Link>
+          <Link href="/goals">
+            <div className="pixel-card p-4 flex items-center gap-3 cursor-pointer hover:bg-[#FFF8F0]/90 active:translate-y-1 transition-transform">
+              <div className="w-10 h-10 rounded bg-[#FFAB91] text-[#1A1035] pixel-border flex items-center justify-center shrink-0">
                 <Target className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-medium text-sm text-foreground">Goals</p>
-                <p className="text-xs text-muted-foreground">{summary?.goalDoneCount || 0}/{summary?.goalCount || 0} reached</p>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">GOALS</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary?.goalDoneCount || 0}/{summary?.goalCount || 0}</p>
               </div>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link href="/wishlist">
-          <Card className="hover-elevate cursor-pointer border-transparent bg-secondary/50">
-            <CardContent className="p-4 flex flex-col items-center justify-center text-center space-y-2 h-32">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <Gift className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-sm text-foreground">Wishlist</p>
-                <p className="text-xs text-muted-foreground">{summary?.wishlistCount || 0} items</p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link href="/bucketlist">
-          <Card className="hover-elevate cursor-pointer border-transparent bg-secondary/50">
-            <CardContent className="p-4 flex flex-col items-center justify-center text-center space-y-2 h-32">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <Map className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-sm text-foreground">Bucket List</p>
-                <p className="text-xs text-muted-foreground">{summary?.bucketDoneCount || 0}/{summary?.bucketCount || 0} done</p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      </div>
+            </div>
+          </Link>
+        </div>
 
-      <div className="space-y-4">
-        <h2 className="text-lg font-serif font-medium">Upcoming Events</h2>
-        {summary?.upcomingEvents?.length ? (
-          <div className="space-y-3">
-            {summary.upcomingEvents.map((event) => {
-              const eventDate = new Date(event.date);
-              const localDate = new Date(eventDate.getTime() + eventDate.getTimezoneOffset() * 60000);
-              return (
-                <Card key={event.id} className="border-transparent bg-secondary/30">
-                  <CardContent className="p-4 flex gap-4 items-center">
-                    <div className="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-background text-primary shrink-0">
-                      <span className="text-[10px] font-bold uppercase tracking-wider">{localDate.toLocaleDateString('en-US', { month: 'short' })}</span>
-                      <span className="text-lg font-serif leading-none mt-0.5">{localDate.getDate()}</span>
+        {/* Upcoming Event */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center gap-2 px-1">
+            <CalendarDays className="w-4 h-4 text-[#FF7043]" />
+            <h2 className="font-pixel text-[10px] text-[#FFF8F0]">NEXT EVENT</h2>
+          </div>
+          
+          {summary?.upcomingEvents?.length ? (
+            <div className="pixel-card p-4 flex gap-4 items-center bg-[#FF7043] text-[#FFF8F0] border-[#6D3B2E]">
+              {(() => {
+                const nextEvent = summary.upcomingEvents[0];
+                const dateObj = new Date(nextEvent.date);
+                const localDate = new Date(dateObj.getTime() + dateObj.getTimezoneOffset() * 60000);
+                return (
+                  <>
+                    <div className="pixel-border bg-[#1A1035] w-14 h-14 flex flex-col items-center justify-center shrink-0 rounded">
+                      <span className="text-[9px] font-pixel text-[#FFAB91]">{localDate.toLocaleDateString('en-US', { month: 'short' })}</span>
+                      <span className="text-lg font-pixel mt-1 text-[#FFF8F0]">{localDate.getDate()}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        {event.isAnniversary && <Star className="w-3.5 h-3.5 text-accent-foreground fill-current" />}
-                        <p className="font-medium text-foreground truncate">{event.title}</p>
-                      </div>
-                      {event.note && <p className="text-sm text-muted-foreground line-clamp-1">{event.note}</p>}
+                      <p className="font-pixel text-[10px] leading-relaxed truncate drop-shadow-md">{nextEvent.title}</p>
+                      {nextEvent.note && <p className="text-xs font-medium opacity-90 mt-1 line-clamp-1">{nextEvent.note}</p>}
                     </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="bg-secondary/20 rounded-2xl p-6 text-center">
-            <p className="text-sm text-muted-foreground">No upcoming events this month.</p>
-          </div>
-        )}
+                  </>
+                );
+              })()}
+            </div>
+          ) : (
+            <div className="pixel-card p-6 text-center border-dashed">
+              <p className="font-pixel text-[9px] text-muted-foreground">NO EVENTS PLANNED</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useGetProfile, useUpdateProfile, getGetProfileQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, User, CalendarDays } from "lucide-react";
 
 export default function SettingsPage() {
   const { data: profile, isLoading } = useGetProfile();
@@ -46,7 +44,7 @@ export default function SettingsPage() {
       {
         onSuccess: (updatedProfile) => {
           queryClient.setQueryData(getGetProfileQueryKey(), updatedProfile);
-          toast({ title: "Settings saved" });
+          toast({ title: "Game saved!" });
         }
       }
     );
@@ -55,80 +53,69 @@ export default function SettingsPage() {
   if (isLoading) {
     return (
       <div className="p-6 space-y-4">
-        <h1 className="text-3xl font-serif text-primary mb-6">Settings</h1>
-        <Skeleton className="h-[400px] w-full rounded-2xl" />
+        <h1 className="font-pixel text-xl text-[#FF7043] mb-8">OPTIONS</h1>
+        <Skeleton className="h-64 w-full rounded pixel-card" />
       </div>
     );
   }
 
   return (
     <div className="p-6 pb-24">
-      <h1 className="text-3xl font-serif text-primary mb-6">Settings</h1>
+      <h1 className="font-pixel text-xl text-[#FF7043] drop-shadow-md mb-8">OPTIONS</h1>
 
-      <Card className="border-transparent bg-secondary/30">
-        <CardHeader>
-          <CardTitle className="font-serif text-lg">Profile</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Heart className="w-4 h-4" /> Space Title
-            </label>
+      <div className="pixel-card p-6 space-y-6">
+        <div className="space-y-3">
+          <label className="font-pixel text-[9px] text-[#FF7043]">SPACE TITLE</label>
+          <Input 
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)} 
+            placeholder="e.g. Our Little Corner"
+            className="font-sans font-medium text-sm pixel-border"
+          />
+        </div>
+
+        <div className="space-y-4 pt-4 border-t-2 border-dashed border-[#6D3B2E]">
+          <div className="space-y-3">
+            <label className="font-pixel text-[9px] text-[#FF6B81]">PLAYER 1 NAME</label>
             <Input 
-              value={title} 
-              onChange={(e) => setTitle(e.target.value)} 
-              placeholder="e.g. Our Little Corner"
-              className="bg-background border-transparent rounded-xl"
+              value={partner1} 
+              onChange={(e) => setPartner1(e.target.value)} 
+              placeholder="Name"
+              className="font-sans font-medium text-sm pixel-border"
             />
           </div>
-
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <User className="w-4 h-4" /> Partner 1 Name
-              </label>
-              <Input 
-                value={partner1} 
-                onChange={(e) => setPartner1(e.target.value)} 
-                placeholder="Name"
-                className="bg-background border-transparent rounded-xl"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <User className="w-4 h-4" /> Partner 2 Name
-              </label>
-              <Input 
-                value={partner2} 
-                onChange={(e) => setPartner2(e.target.value)} 
-                placeholder="Name"
-                className="bg-background border-transparent rounded-xl"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <CalendarDays className="w-4 h-4" /> Anniversary Date
-            </label>
+          
+          <div className="space-y-3">
+            <label className="font-pixel text-[9px] text-[#4CAF78]">PLAYER 2 NAME</label>
             <Input 
-              type="date"
-              value={anniversary ? new Date(anniversary).toISOString().split('T')[0] : ""} 
-              onChange={(e) => setAnniversary(e.target.value)} 
-              className="bg-background border-transparent rounded-xl"
+              value={partner2} 
+              onChange={(e) => setPartner2(e.target.value)} 
+              placeholder="Name"
+              className="font-sans font-medium text-sm pixel-border"
             />
           </div>
+        </div>
 
+        <div className="space-y-3 pt-4 border-t-2 border-dashed border-[#6D3B2E]">
+          <label className="font-pixel text-[9px] text-[#FFAB91]">ANNIVERSARY DATE</label>
+          <Input 
+            type="date"
+            value={anniversary ? new Date(anniversary).toISOString().split('T')[0] : ""} 
+            onChange={(e) => setAnniversary(e.target.value)} 
+            className="font-sans font-medium text-sm pixel-border"
+          />
+        </div>
+
+        <div className="pt-6">
           <Button 
-            className="w-full rounded-xl" 
+            className="w-full pixel-btn h-14" 
             onClick={handleSave}
             disabled={updateProfile.isPending}
           >
-            {updateProfile.isPending ? "Saving..." : "Save Changes"}
+            {updateProfile.isPending ? "SAVING..." : "SAVE PROGRESS"}
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { SplashScreen } from "@/components/SplashScreen";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import CalendarPage from "@/pages/calendar";
@@ -11,6 +12,8 @@ import GoalsPage from "@/pages/goals";
 import WishlistPage from "@/pages/wishlist";
 import BucketlistPage from "@/pages/bucketlist";
 import SettingsPage from "@/pages/settings";
+import MorePage from "@/pages/more";
+import { useState, useEffect } from "react";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +28,7 @@ function Router() {
         <Route path="/wishlist" component={WishlistPage} />
         <Route path="/bucketlist" component={BucketlistPage} />
         <Route path="/settings" component={SettingsPage} />
+        <Route path="/more" component={MorePage} />
         <Route component={NotFound} />
       </Switch>
     </AppLayout>
@@ -32,12 +36,30 @@ function Router() {
 }
 
 function App() {
+  const [showSplash, setShowSplash] = useState(false);
+
+  useEffect(() => {
+    const hasSeenSplash = sessionStorage.getItem("splashShown");
+    if (!hasSeenSplash) {
+      setShowSplash(true);
+    }
+  }, []);
+
+  const handleSplashComplete = () => {
+    sessionStorage.setItem("splashShown", "true");
+    setShowSplash(false);
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
+        {showSplash ? (
+          <SplashScreen onComplete={handleSplashComplete} />
+        ) : (
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+        )}
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
