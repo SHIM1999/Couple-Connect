@@ -7,12 +7,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Trash2, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLang } from "@/lib/i18n";
 
 export default function GoalsPage() {
+  const { t } = useLang();
   const { data: goals, isLoading } = useListGoals();
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  
+
   const createGoal = useCreateGoal();
   const updateGoal = useUpdateGoal();
   const deleteGoal = useDeleteGoal();
@@ -23,57 +25,42 @@ export default function GoalsPage() {
   const [newCategory, setNewCategory] = useState("");
 
   const handleToggle = (id: number, completed: boolean) => {
-    updateGoal.mutate(
-      { id, data: { completed: !completed } },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
-          queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-          if (!completed) {
-            toast({ title: "Goal achieved! 🎉" });
-          }
-        }
+    updateGoal.mutate({ id, data: { completed: !completed } }, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
+        if (!completed) toast({ title: t("goals_achieved") });
       }
-    );
+    });
   };
 
   const handleDelete = (id: number) => {
-    deleteGoal.mutate(
-      { id },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
-          queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-          toast({ title: "Goal deleted!" });
-        }
+    deleteGoal.mutate({ id }, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
+        toast({ title: t("goals_deleted") });
       }
-    );
+    });
   };
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
-
-    createGoal.mutate(
-      { data: { title: newTitle, note: newNote, category: newCategory } },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
-          queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-          setIsOpen(false);
-          setNewTitle("");
-          setNewNote("");
-          setNewCategory("");
-          toast({ title: "Goal set!" });
-        }
+    createGoal.mutate({ data: { title: newTitle, note: newNote, category: newCategory } }, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
+        setIsOpen(false); setNewTitle(""); setNewNote(""); setNewCategory("");
+        toast({ title: t("goals_set") });
       }
-    );
+    });
   };
 
   if (isLoading) {
     return (
       <div className="p-6 space-y-4">
-        <h1 className="font-pixel text-xl text-[#FF7043] mb-8">MILESTONES</h1>
+        <h1 className="font-pixel text-xl text-[#FF7043] mb-8">{t("goals_title")}</h1>
         <Skeleton className="h-28 w-full rounded pixel-card" />
         <Skeleton className="h-28 w-full rounded pixel-card" />
       </div>
@@ -83,45 +70,23 @@ export default function GoalsPage() {
   return (
     <div className="p-6 pb-24">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-pixel text-xl text-[#FF7043] drop-shadow-md">MILESTONES</h1>
+        <h1 className="font-pixel text-xl text-[#FF7043] drop-shadow-md">{t("goals_title")}</h1>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button size="icon" className="pixel-btn w-12 h-12 rounded-full flex items-center justify-center bg-[#FFAB91] text-[#1A1035]">
+            <Button size="icon" className="pixel-btn w-12 h-12 rounded-full bg-[#FFAB91]" style={{ color: "#4A2518" }}>
               <Plus className="w-6 h-6" />
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md pixel-card p-6 border-4">
             <DialogHeader>
-              <DialogTitle className="font-pixel text-sm text-[#1A1035] mb-4">SET NEW GOAL</DialogTitle>
+              <DialogTitle className="font-pixel text-sm text-foreground mb-4">{t("goals_new")}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleAdd} className="space-y-4">
-              <div>
-                <Input 
-                  placeholder="What's the goal?" 
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  className="pixel-border font-sans font-medium text-sm"
-                  autoFocus
-                />
-              </div>
-              <div>
-                <Input 
-                  placeholder="Category (e.g., Travel)" 
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  className="pixel-border font-sans text-sm"
-                />
-              </div>
-              <div>
-                <Input 
-                  placeholder="Details (optional)" 
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
-                  className="pixel-border font-sans text-sm"
-                />
-              </div>
+              <Input placeholder={t("goals_ph")} value={newTitle} onChange={e => setNewTitle(e.target.value)} className="pixel-border font-sans font-medium text-sm" autoFocus />
+              <Input placeholder={t("goals_category_ph")} value={newCategory} onChange={e => setNewCategory(e.target.value)} className="pixel-border font-sans text-sm" />
+              <Input placeholder={t("goals_details_ph")} value={newNote} onChange={e => setNewNote(e.target.value)} className="pixel-border font-sans text-sm" />
               <Button type="submit" className="w-full pixel-btn h-12 text-xs" disabled={!newTitle.trim() || createGoal.isPending}>
-                {createGoal.isPending ? "SAVING..." : "COMMIT GOAL"}
+                {createGoal.isPending ? t("goals_saving") : t("goals_commit")}
               </Button>
             </form>
           </DialogContent>
@@ -131,45 +96,26 @@ export default function GoalsPage() {
       {!goals || goals.length === 0 ? (
         <div className="text-center py-16 pixel-card border-dashed">
           <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-          <p className="font-pixel text-[9px] text-muted-foreground leading-loose">NO GOALS SET YET.<br/>DREAM BIG!</p>
+          <p className="font-pixel text-[9px] text-muted-foreground leading-loose whitespace-pre-line">{t("goals_empty")}</p>
         </div>
       ) : (
         <div className="space-y-6 animate-stagger">
-          {goals.map((goal) => (
-            <div key={goal.id} className={`pixel-card p-5 relative overflow-hidden transition-all duration-300 ${goal.completed ? 'bg-[#4CAF78] text-[#FFF8F0] border-[#1A1035]' : 'bg-[#FFF8F0]'}`}>
-              {/* Progress Bar Feel Background for completed */}
-              {goal.completed && (
-                <div className="absolute inset-0 bg-[#FF7043] w-full transform origin-left transition-transform duration-500 pixel-shimmer z-0 opacity-20" />
-              )}
-              
+          {goals.map(goal => (
+            <div key={goal.id} className={`pixel-card p-5 relative overflow-hidden transition-all duration-300 ${goal.completed ? 'bg-[#4CAF78] text-[#FFF8F0] border-border' : ''}`}>
               <div className="relative z-10 flex gap-4">
-                <button 
-                  onClick={() => handleToggle(goal.id, goal.completed)}
-                  className={`w-10 h-10 shrink-0 rounded pixel-border flex items-center justify-center transition-colors ${goal.completed ? 'bg-[#FFAB91] text-[#1A1035]' : 'bg-[#1A1035] text-[#FFF8F0] hover:bg-[#FF7043]'}`}
-                >
+                <button onClick={() => handleToggle(goal.id, goal.completed)}
+                  className={`w-10 h-10 shrink-0 rounded pixel-border flex items-center justify-center transition-colors ${goal.completed ? 'bg-[#FFAB91] text-[#4A2518]' : 'bg-card-foreground text-card hover:bg-[#FF7043] hover:text-[#FFF8F0]'}`}>
                   <Trophy className="w-5 h-5" />
                 </button>
                 <div className="flex-1 min-w-0">
                   {goal.category && (
-                    <span className="inline-block px-2 py-1 bg-[#1A1035] text-[#FFF8F0] font-pixel text-[6px] rounded-sm pixel-border mb-3">
-                      {goal.category}
-                    </span>
+                    <span className="inline-block px-2 py-1 bg-card-foreground text-card font-pixel text-[6px] rounded-sm pixel-border mb-3">{goal.category}</span>
                   )}
-                  <h3 className={`font-sans font-bold text-lg tracking-wide leading-tight ${goal.completed ? 'text-[#1A1035]' : 'text-card-foreground'}`}>
-                    {goal.title}
-                  </h3>
-                  {goal.note && (
-                    <p className={`text-sm font-medium mt-1 line-clamp-2 ${goal.completed ? 'text-[#1A1035]/80' : 'text-muted-foreground'}`}>
-                      {goal.note}
-                    </p>
-                  )}
+                  <h3 className={`font-sans font-bold text-lg tracking-wide leading-tight ${goal.completed ? 'text-[#1A1035]' : 'text-card-foreground'}`}>{goal.title}</h3>
+                  {goal.note && <p className={`text-sm font-medium mt-1 line-clamp-2 ${goal.completed ? 'text-[#1A1035]/80' : 'text-muted-foreground'}`}>{goal.note}</p>}
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => handleDelete(goal.id)}
-                  className={`${goal.completed ? 'text-[#1A1035] hover:bg-[#1A1035]/20' : 'text-muted-foreground hover:bg-destructive/10 hover:text-destructive'} shrink-0 h-8 w-8`}
-                >
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(goal.id)}
+                  className={`${goal.completed ? 'text-[#1A1035] hover:bg-[#1A1035]/20' : 'text-muted-foreground hover:bg-destructive/10 hover:text-destructive'} shrink-0 h-8 w-8`}>
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
