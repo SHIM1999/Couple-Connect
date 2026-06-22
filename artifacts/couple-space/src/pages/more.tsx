@@ -10,17 +10,18 @@ export default function MorePage() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(currentUrl);
-    toast({ title: "Link copied to clipboard! 🎮" });
+    toast({ title: "Link copied! Share with your love" });
   };
 
   return (
     <div className="p-6 pb-24 space-y-6">
-      <h1 className="font-pixel text-xl text-[#FF7043] mb-8 drop-shadow-md">MENU</h1>
+      <h1 className="font-pixel text-xl text-primary mb-8 drop-shadow-sm">MENU</h1>
 
       <div className="space-y-4">
         <Link href="/wishlist">
-          <div className="pixel-card p-4 flex items-center gap-4 cursor-pointer hover:bg-[#FFF8F0]/90 active:translate-y-1 transition-transform">
-            <div className="w-12 h-12 rounded bg-[#FF6B81] text-[#FFF8F0] pixel-border flex items-center justify-center shrink-0">
+          <div className="pixel-card p-4 flex items-center gap-4 cursor-pointer hover:brightness-95 active:translate-y-1 transition-transform">
+            <div className="w-12 h-12 rounded pixel-border flex items-center justify-center shrink-0"
+                 style={{ background: "#F2526A", color: "#fde8e0" }}>
               <Gift className="w-6 h-6" />
             </div>
             <div>
@@ -31,8 +32,9 @@ export default function MorePage() {
         </Link>
 
         <Link href="/bucketlist">
-          <div className="pixel-card p-4 flex items-center gap-4 cursor-pointer hover:bg-[#FFF8F0]/90 active:translate-y-1 transition-transform">
-            <div className="w-12 h-12 rounded bg-[#4CAF78] text-[#FFF8F0] pixel-border flex items-center justify-center shrink-0">
+          <div className="pixel-card p-4 flex items-center gap-4 cursor-pointer hover:brightness-95 active:translate-y-1 transition-transform">
+            <div className="w-12 h-12 rounded pixel-border flex items-center justify-center shrink-0"
+                 style={{ background: "#4CAF78", color: "#fde8e0" }}>
               <Map className="w-6 h-6" />
             </div>
             <div>
@@ -43,8 +45,9 @@ export default function MorePage() {
         </Link>
 
         <Link href="/settings">
-          <div className="pixel-card p-4 flex items-center gap-4 cursor-pointer hover:bg-[#FFF8F0]/90 active:translate-y-1 transition-transform">
-            <div className="w-12 h-12 rounded bg-[#1A1035] text-[#FFF8F0] pixel-border flex items-center justify-center shrink-0">
+          <div className="pixel-card p-4 flex items-center gap-4 cursor-pointer hover:brightness-95 active:translate-y-1 transition-transform">
+            <div className="w-12 h-12 rounded pixel-border flex items-center justify-center shrink-0"
+                 style={{ background: "#c47b68", color: "#fde8e0" }}>
               <Settings className="w-6 h-6" />
             </div>
             <div>
@@ -55,21 +58,21 @@ export default function MorePage() {
         </Link>
       </div>
 
-      <div className="mt-12 pt-8 border-t-[3px] border-dashed border-[#6D3B2E]">
+      <div className="mt-12 pt-8 border-t-[3px] border-dashed border-border">
         <div className="flex items-center gap-2 mb-4">
-          <Share2 className="w-5 h-5 text-[#FFAB91]" />
-          <h2 className="font-pixel text-[10px] text-[#FFF8F0]">INVITE PLAYER 2</h2>
+          <Share2 className="w-5 h-5 text-primary" />
+          <h2 className="font-pixel text-[10px] text-foreground">INVITE PLAYER 2</h2>
         </div>
-        
-        <div className="pixel-card p-5 space-y-4 bg-[#1A1035] text-[#FFF8F0] border-[#FF7043]">
-          <p className="text-sm font-medium">Share this link to connect your accounts:</p>
+
+        <div className="pixel-card p-5 space-y-4">
+          <p className="text-sm font-medium text-card-foreground">Share this link to connect your accounts:</p>
           <div className="flex gap-2">
-            <Input 
-              readOnly 
-              value={currentUrl} 
-              className="bg-[#FFF8F0] text-[#1A1035] pixel-border font-mono text-xs"
+            <Input
+              readOnly
+              value={currentUrl}
+              className="pixel-border font-mono text-xs"
             />
-            <Button onClick={handleCopy} className="pixel-btn px-4 shrink-0 bg-[#FF7043] border-[#6D3B2E] text-[#FFF8F0]">
+            <Button onClick={handleCopy} className="pixel-btn px-4 shrink-0">
               <Copy className="w-4 h-4 mr-2" /> COPY
             </Button>
           </div>
