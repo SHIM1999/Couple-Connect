@@ -7,6 +7,7 @@ import wishlistRouter from "./wishlist";
 import bucketlistRouter from "./bucketlist";
 import eventsRouter from "./events";
 import summaryRouter from "./summary";
+import happinessRouter from "./happiness";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(wishlistRouter);
 router.use(bucketlistRouter);
 router.use(eventsRouter);
 router.use(summaryRouter);
+router.use(happinessRouter);
 
 export default router;

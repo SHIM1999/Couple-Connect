@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -12,6 +12,10 @@ export const coupleProfileTable = pgTable("couple_profile", {
   partner2Emoji: text("partner2_emoji"),
   anniversaryDate: text("anniversary_date"),
   coupleTitle: text("couple_title"),
+  partner1HappinessValue: integer("partner1_happiness_value").notNull().default(0),
+  partner1HappinessPressedAt: timestamp("partner1_happiness_pressed_at", { withTimezone: true }),
+  partner2HappinessValue: integer("partner2_happiness_value").notNull().default(0),
+  partner2HappinessPressedAt: timestamp("partner2_happiness_pressed_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

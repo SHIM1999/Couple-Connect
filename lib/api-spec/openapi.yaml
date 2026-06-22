@@ -505,6 +505,14 @@ components:
           type: ["string", "null"]
         coupleTitle:
           type: ["string", "null"]
+        partner1HappinessValue:
+          type: integer
+        partner1HappinessPressedAt:
+          type: ["string", "null"]
+        partner2HappinessValue:
+          type: integer
+        partner2HappinessPressedAt:
+          type: ["string", "null"]
         createdAt:
           type: string
 

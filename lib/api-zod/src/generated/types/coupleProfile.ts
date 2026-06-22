@@ -20,5 +20,11 @@ export interface CoupleProfile {
   anniversaryDate: string | null;
   /** @nullable */
   coupleTitle?: string | null;
+  partner1HappinessValue?: number;
+  /** @nullable */
+  partner1HappinessPressedAt?: string | null;
+  partner2HappinessValue?: number;
+  /** @nullable */
+  partner2HappinessPressedAt?: string | null;
   createdAt?: string;
 }

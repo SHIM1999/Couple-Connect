@@ -29,6 +29,10 @@ export const GetProfileResponse = zod.object({
   "partner2Emoji": zod.string().nullish(),
   "anniversaryDate": zod.string().nullable(),
   "coupleTitle": zod.string().nullish(),
+  "partner1HappinessValue": zod.number().optional(),
+  "partner1HappinessPressedAt": zod.string().nullish(),
+  "partner2HappinessValue": zod.number().optional(),
+  "partner2HappinessPressedAt": zod.string().nullish(),
   "createdAt": zod.string().optional()
 })
 
@@ -55,6 +59,10 @@ export const UpdateProfileResponse = zod.object({
   "partner2Emoji": zod.string().nullish(),
   "anniversaryDate": zod.string().nullable(),
   "coupleTitle": zod.string().nullish(),
+  "partner1HappinessValue": zod.number().optional(),
+  "partner1HappinessPressedAt": zod.string().nullish(),
+  "partner2HappinessValue": zod.number().optional(),
+  "partner2HappinessPressedAt": zod.string().nullish(),
   "createdAt": zod.string().optional()
 })
 
@@ -81,6 +89,10 @@ export const UpdateStatusResponse = zod.object({
   "partner2Emoji": zod.string().nullish(),
   "anniversaryDate": zod.string().nullable(),
   "coupleTitle": zod.string().nullish(),
+  "partner1HappinessValue": zod.number().optional(),
+  "partner1HappinessPressedAt": zod.string().nullish(),
+  "partner2HappinessValue": zod.number().optional(),
+  "partner2HappinessPressedAt": zod.string().nullish(),
   "createdAt": zod.string().optional()
 })
 
