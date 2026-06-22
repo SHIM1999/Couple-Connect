@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 
 export const coupleProfileTable = pgTable("couple_profile", {
   id: serial("id").primaryKey(),
+  coupleCode: text("couple_code").notNull().default("default"),
   partner1Name: text("partner1_name").notNull().default("Partner 1"),
   partner2Name: text("partner2_name").notNull().default("Partner 2"),
   partner1Status: text("partner1_status").notNull().default(""),

@@ -1,4 +1,5 @@
 import { Router, type IRouter } from "express";
+import { coupleCodeMiddleware } from "../middleware/coupleCode";
 import healthRouter from "./health";
 import profileRouter from "./profile";
 import todosRouter from "./todos";
@@ -12,6 +13,9 @@ import happinessRouter from "./happiness";
 const router: IRouter = Router();
 
 router.use(healthRouter);
+
+// All data routes require a couple code
+router.use(coupleCodeMiddleware);
 router.use(profileRouter);
 router.use(todosRouter);
 router.use(goalsRouter);

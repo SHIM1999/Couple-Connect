@@ -4,14 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useLang } from "@/lib/i18n";
+import { getInviteUrl } from "@/lib/coupleCode";
 
 export default function MorePage() {
   const { toast } = useToast();
   const { t } = useLang();
-  const currentUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const inviteUrl = typeof window !== 'undefined' ? getInviteUrl() : '';
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(currentUrl);
+    navigator.clipboard.writeText(inviteUrl);
     toast({ title: t("more_copied") });
   };
 
@@ -71,7 +72,7 @@ export default function MorePage() {
           <div className="flex gap-2">
             <Input
               readOnly
-              value={currentUrl}
+              value={inviteUrl}
               className="pixel-border font-mono text-xs"
             />
             <Button onClick={handleCopy} className="pixel-btn px-4 shrink-0">

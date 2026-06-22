@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db, todosTable } from "@workspace/db";
 import {
   ListTodosResponse,
@@ -14,21 +14,26 @@ import { serializeRow, serializeRows } from "../lib/serialize";
 const router: IRouter = Router();
 
 router.get("/todos", async (req, res): Promise<void> => {
-  const todos = await db.select().from(todosTable).orderBy(todosTable.createdAt);
+  const coupleCode = res.locals.coupleCode as string;
+  const todos = await db.select().from(todosTable)
+    .where(eq(todosTable.coupleCode, coupleCode))
+    .orderBy(todosTable.createdAt);
   res.json(ListTodosResponse.parse(serializeRows(todos)));
 });
 
 router.post("/todos", async (req, res): Promise<void> => {
+  const coupleCode = res.locals.coupleCode as string;
   const parsed = CreateTodoBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
     return;
   }
-  const [todo] = await db.insert(todosTable).values(parsed.data).returning();
+  const [todo] = await db.insert(todosTable).values({ ...parsed.data, coupleCode }).returning();
   res.status(201).json(serializeRow(todo));
 });
 
 router.patch("/todos/:id", async (req, res): Promise<void> => {
+  const coupleCode = res.locals.coupleCode as string;
   const params = UpdateTodoParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -42,7 +47,7 @@ router.patch("/todos/:id", async (req, res): Promise<void> => {
   const [todo] = await db
     .update(todosTable)
     .set(parsed.data)
-    .where(eq(todosTable.id, params.data.id))
+    .where(and(eq(todosTable.id, params.data.id), eq(todosTable.coupleCode, coupleCode)))
     .returning();
   if (!todo) {
     res.status(404).json({ error: "Todo not found" });
@@ -52,12 +57,15 @@ router.patch("/todos/:id", async (req, res): Promise<void> => {
 });
 
 router.delete("/todos/:id", async (req, res): Promise<void> => {
+  const coupleCode = res.locals.coupleCode as string;
   const params = DeleteTodoParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
     return;
   }
-  const [todo] = await db.delete(todosTable).where(eq(todosTable.id, params.data.id)).returning();
+  const [todo] = await db.delete(todosTable)
+    .where(and(eq(todosTable.id, params.data.id), eq(todosTable.coupleCode, coupleCode)))
+    .returning();
   if (!todo) {
     res.status(404).json({ error: "Todo not found" });
     return;

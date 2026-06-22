@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 
 export const bucketlistTable = pgTable("bucketlist", {
   id: serial("id").primaryKey(),
+  coupleCode: text("couple_code").notNull().default("default"),
   title: text("title").notNull(),
   completed: boolean("completed").notNull().default(false),
   note: text("note"),

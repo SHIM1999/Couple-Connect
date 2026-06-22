@@ -26,13 +26,15 @@ function computeCurrentValue(storedValue: number, pressedAt: Date | null): numbe
 }
 
 router.post("/happiness/press/:person", async (req, res): Promise<void> => {
+  const coupleCode = res.locals.coupleCode as string;
   const { person } = req.params;
   if (person !== "partner1" && person !== "partner2") {
     res.status(400).json({ error: "person must be partner1 or partner2" });
     return;
   }
 
-  const [profile] = await db.select().from(coupleProfileTable).limit(1);
+  const [profile] = await db.select().from(coupleProfileTable)
+    .where(eq(coupleProfileTable.coupleCode, coupleCode)).limit(1);
   if (!profile) {
     res.status(404).json({ error: "Profile not found" });
     return;
@@ -59,7 +61,9 @@ router.post("/happiness/press/:person", async (req, res): Promise<void> => {
 });
 
 router.get("/happiness", async (req, res): Promise<void> => {
-  const [profile] = await db.select().from(coupleProfileTable).limit(1);
+  const coupleCode = res.locals.coupleCode as string;
+  const [profile] = await db.select().from(coupleProfileTable)
+    .where(eq(coupleProfileTable.coupleCode, coupleCode)).limit(1);
   if (!profile) {
     res.json({ partner1: 0, partner2: 0 });
     return;

@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 
 export const eventsTable = pgTable("events", {
   id: serial("id").primaryKey(),
+  coupleCode: text("couple_code").notNull().default("default"),
   title: text("title").notNull(),
   date: text("date").notNull(),
   note: text("note"),

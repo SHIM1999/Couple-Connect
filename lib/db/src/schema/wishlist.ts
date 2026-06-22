@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 
 export const wishlistTable = pgTable("wishlist", {
   id: serial("id").primaryKey(),
+  coupleCode: text("couple_code").notNull().default("default"),
   title: text("title").notNull(),
   note: text("note"),
   link: text("link"),
