@@ -43,7 +43,7 @@ router.post("/happiness/press/:person", async (req, res): Promise<void> => {
   const pressedAt = person === "partner1" ? profile.partner1HappinessPressedAt : profile.partner2HappinessPressedAt;
 
   const current = computeCurrentValue(storedValue, pressedAt);
-  const newValue = Math.min(100, current + 34);
+  const newValue = Math.min(100, current + 17);
   const now = new Date();
 
   const updateData =
