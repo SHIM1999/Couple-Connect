@@ -51,61 +51,60 @@
   --app-font-mono: 'Press Start 2P', monospace;
   --radius: 8px;
 
-  /* Retro Pixel Game Palette */
-  --background: 256 54% 13%; /* Deep navy #1A1035 */
-  --foreground: 32 100% 97%; /* Cream/Beige #FFF8F0 */
-  
-  --border: 12 40% 30%; /* Warm brown #6D3B2E */
-  --input: 12 40% 30%;
-  --ring: 14 100% 63%; /* Sunset orange #FF7043 */
-  
-  --card: 32 100% 97%; /* Cream #FFF8F0 */
-  --card-foreground: 256 54% 13%; /* Deep navy text on cards */
-  --card-border: 12 40% 30%; /* Warm brown */
-  
-  --popover: 32 100% 97%;
-  --popover-foreground: 256 54% 13%;
-  --popover-border: 12 40% 30%;
-  
-  --primary: 14 100% 63%; /* Sunset orange #FF7043 */
-  --primary-foreground: 32 100% 97%;
-  
-  --secondary: 351 100% 71%; /* Coral pink #FF6B81 */
-  --secondary-foreground: 32 100% 97%;
-  
-  --muted: 14 100% 78%; /* Peach #FFAB91 */
-  --muted-foreground: 12 40% 30%; /* Warm brown */
-  
-  --accent: 146 39% 49%; /* Soft green #4CAF78 */
-  --accent-foreground: 32 100% 97%;
-  
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 32 100% 97%;
+  /* Retro Pixel Game Palette — Light warm base */
+  --background: 28 60% 94%; /* Warm peach-cream #F7EDE4 */
+  --foreground: 16 45% 22%; /* Deep warm brown #4A2518 */
+
+  --border: 16 38% 55%; /* Warm terracotta #B0634A */
+  --input: 16 38% 55%;
+  --ring: 14 100% 60%; /* Sunset orange */
+
+  --card: 30 80% 98%; /* Soft warm white #FFF6F0 */
+  --card-foreground: 16 45% 22%;
+  --card-border: 16 38% 55%;
+
+  --popover: 30 80% 98%;
+  --popover-foreground: 16 45% 22%;
+  --popover-border: 16 38% 55%;
+
+  --primary: 14 90% 58%; /* Sunset orange #F4623A */
+  --primary-foreground: 30 80% 98%;
+
+  --secondary: 351 85% 65%; /* Coral pink #F2526A */
+  --secondary-foreground: 30 80% 98%;
+
+  --muted: 25 55% 88%; /* Soft peach panel #F0D9C8 */
+  --muted-foreground: 16 35% 40%;
+
+  --accent: 146 39% 44%; /* Soft green */
+  --accent-foreground: 30 80% 98%;
+
+  --destructive: 0 80% 58%;
+  --destructive-foreground: 30 80% 98%;
 }
 
 .dark {
-  /* Keep same colors since app is inherently dark-mode-first via the deep navy bg */
-  --background: 256 54% 13%; 
-  --foreground: 32 100% 97%;
-  --border: 12 40% 30%;
-  --input: 12 40% 30%;
-  --ring: 14 100% 63%;
-  --card: 32 100% 97%;
-  --card-foreground: 256 54% 13%;
-  --card-border: 12 40% 30%;
-  --popover: 32 100% 97%;
-  --popover-foreground: 256 54% 13%;
-  --popover-border: 12 40% 30%;
-  --primary: 14 100% 63%;
-  --primary-foreground: 32 100% 97%;
-  --secondary: 351 100% 71%;
-  --secondary-foreground: 32 100% 97%;
-  --muted: 14 100% 78%;
-  --muted-foreground: 12 40% 30%;
-  --accent: 146 39% 49%;
-  --accent-foreground: 32 100% 97%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 32 100% 97%;
+  --background: 28 60% 94%;
+  --foreground: 16 45% 22%;
+  --border: 16 38% 55%;
+  --input: 16 38% 55%;
+  --ring: 14 90% 58%;
+  --card: 30 80% 98%;
+  --card-foreground: 16 45% 22%;
+  --card-border: 16 38% 55%;
+  --popover: 30 80% 98%;
+  --popover-foreground: 16 45% 22%;
+  --popover-border: 16 38% 55%;
+  --primary: 14 90% 58%;
+  --primary-foreground: 30 80% 98%;
+  --secondary: 351 85% 65%;
+  --secondary-foreground: 30 80% 98%;
+  --muted: 25 55% 88%;
+  --muted-foreground: 16 35% 40%;
+  --accent: 146 39% 44%;
+  --accent-foreground: 30 80% 98%;
+  --destructive: 0 80% 58%;
+  --destructive-foreground: 30 80% 98%;
 }
 
 @layer base {
