@@ -8,6 +8,8 @@ import { Link } from "wouter";
 import heroImg from "@assets/ChatGPT_Image_2026년_6월_22일_오전_08_45_49_1782085558954.png";
 import { HappinessGauge } from "@/components/HappinessGauge";
 import { useLang } from "@/lib/i18n";
+import { apiFetch } from "@/lib/api";
+import { playHeartSound } from "@/lib/sounds";
 
 interface FloatingHeart {
   id: number;
@@ -39,7 +41,7 @@ export default function Home() {
 
   const fetchHappiness = useCallback(async () => {
     try {
-      const res = await fetch("/api/happiness");
+      const res = await apiFetch("/api/happiness");
       const data = await res.json() as { partner1: number; partner2: number };
       setHappiness({ partner1: data.partner1 ?? 0, partner2: data.partner2 ?? 0 });
     } catch {}
@@ -74,14 +76,15 @@ export default function Home() {
   }, []);
 
   const handleDayPress = useCallback(async () => {
+    playHeartSound();
     spawnHearts();
     setGaugeAnimate(true);
     setTimeout(() => setGaugeAnimate(false), 700);
 
     try {
       await Promise.all([
-        fetch("/api/happiness/press/partner1", { method: "POST" }),
-        fetch("/api/happiness/press/partner2", { method: "POST" }),
+        apiFetch("/api/happiness/press/partner1", { method: "POST" }),
+        apiFetch("/api/happiness/press/partner2", { method: "POST" }),
       ]);
       await fetchHappiness();
     } catch {}

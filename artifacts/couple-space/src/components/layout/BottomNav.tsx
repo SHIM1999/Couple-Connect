@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Home, Calendar, CheckSquare, Target, Menu } from "lucide-react";
 import { useLang } from "@/lib/i18n";
+import { playNavTapSound } from "@/lib/sounds";
 
 export function BottomNav() {
   const [location] = useLocation();
@@ -24,7 +25,7 @@ export function BottomNav() {
 
             if (isCenter) {
               return (
-                <Link key={href} href={href} className="relative flex flex-col items-center justify-center w-16 h-full -mt-6">
+                <Link key={href} href={href} onClick={playNavTapSound} className="relative flex flex-col items-center justify-center w-16 h-full -mt-6">
                   <div className={`w-14 h-14 rounded-full border-4 flex items-center justify-center transition-all duration-200 z-10
                     ${isActive
                       ? 'bg-[#F4623A] border-[#fde8e0] shadow-[0_4px_0_#a85f4e] -translate-y-1'
@@ -40,7 +41,7 @@ export function BottomNav() {
             }
 
             return (
-              <Link key={href} href={href} className="relative flex flex-col items-center justify-center w-14 h-full pt-1">
+              <Link key={href} href={href} onClick={playNavTapSound} className="relative flex flex-col items-center justify-center w-14 h-full pt-1">
                 <div className={`flex flex-col items-center transition-all duration-200 ${isActive ? 'text-[#8b3a25]' : 'text-[#7a3520] hover:text-[#8b3a25]'}`}>
                   <Icon className={`w-5 h-5 mb-1.5 transition-transform duration-200 ${isActive ? 'scale-110 stroke-[2.5px]' : 'scale-100 stroke-[2px]'}`} />
                   <span className="text-[7px] font-pixel uppercase tracking-tighter">{label}</span>
