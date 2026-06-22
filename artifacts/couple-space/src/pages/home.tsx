@@ -159,27 +159,20 @@ export default function Home() {
         style={{ background: "hsl(var(--background))", borderRadius: "20px 20px 0 0" }}>
 
         {/* HAPPINESS GAUGES */}
-        <div className="pixel-card p-4">
-          <p className="font-pixel text-[9px] text-foreground mb-4 text-center">&#10084; HAPPINESS &#10084;</p>
-          <div className="flex justify-around items-end gap-4">
-            <HappinessGauge
-              label={profile?.partner1Name?.toUpperCase() ?? "YOU"}
-              value={happiness.partner1}
-              color="#FF6B81"
-              animate={gaugeAnimate}
-            />
-            {/* Tap hint */}
-            <div className="flex flex-col items-center gap-1 pb-8">
-              <span className="font-pixel text-[7px] text-muted-foreground text-center leading-relaxed">TAP<br/>D+DAY<br/>TO FILL</span>
-              <span className="text-lg animate-bounce">&#8593;</span>
-            </div>
-            <HappinessGauge
-              label={profile?.partner2Name?.toUpperCase() ?? "THEM"}
-              value={happiness.partner2}
-              color="#FF7043"
-              animate={gaugeAnimate}
-            />
-          </div>
+        <div className="pixel-card p-4 space-y-4">
+          <p className="font-pixel text-[9px] text-foreground text-center">&#10084; HAPPINESS &#10084;</p>
+          <HappinessGauge
+            label={profile?.partner1Name?.toUpperCase() ?? "ME"}
+            value={happiness.partner1}
+            color="#FF6B81"
+            animate={gaugeAnimate}
+          />
+          <HappinessGauge
+            label={profile?.partner2Name?.toUpperCase() ?? "MY LOVE"}
+            value={happiness.partner2}
+            color="#FF7043"
+            animate={gaugeAnimate}
+          />
         </div>
 
         {/* STATUS PANELS */}
