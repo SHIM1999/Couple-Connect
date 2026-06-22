@@ -25,7 +25,11 @@ app.use(
     },
   }),
 );
-app.use(cors());
+app.use(cors({
+  origin: true,
+  allowedHeaders: ["Content-Type", "Authorization", "X-Couple-Code"],
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
