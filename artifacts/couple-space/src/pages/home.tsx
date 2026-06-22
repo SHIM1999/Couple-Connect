@@ -7,6 +7,7 @@ import { CheckSquare, Target, CalendarDays, Edit2, Gift, Map } from "lucide-reac
 import { Link } from "wouter";
 import heroImg from "@assets/ChatGPT_Image_2026년_6월_22일_오전_08_45_49_1782085558954.png";
 import { HappinessGauge } from "@/components/HappinessGauge";
+import { useLang } from "@/lib/i18n";
 
 interface FloatingHeart {
   id: number;
@@ -32,6 +33,7 @@ export default function Home() {
   const [tempStatus, setTempStatus] = useState("");
   const [hearts, setHearts] = useState<FloatingHeart[]>([]);
   const [gaugeAnimate, setGaugeAnimate] = useState(false);
+  const { t } = useLang();
   const [happiness, setHappiness] = useState<HappinessState>({ partner1: 0, partner2: 0 });
   const heartIdRef = useRef(0);
 
@@ -113,10 +115,10 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/60 pointer-events-none" />
           <div className="absolute top-0 left-0 right-0 p-6 pt-12 flex flex-col items-center text-center pointer-events-none">
             <h1 className="font-pixel text-xl sm:text-2xl text-[#FF7043] drop-shadow-[2px_2px_0_#000]">
-              {profile?.coupleTitle || "Couple Connect"}
+              {profile?.coupleTitle || t("home_title_fallback")}
             </h1>
             <p className="mt-3 font-sans font-semibold tracking-widest uppercase text-xs text-[#FFF8F0] opacity-90">
-              Plan together. Grow together.
+              {t("home_subtitle")}
             </p>
           </div>
         </div>
@@ -160,7 +162,7 @@ export default function Home() {
 
         {/* HAPPINESS GAUGES */}
         <div className="pixel-card p-4 space-y-4">
-          <p className="font-pixel text-[9px] text-foreground text-center">&#10084; HAPPINESS &#10084;</p>
+          <p className="font-pixel text-[9px] text-foreground text-center">&#10084; {t("home_happiness")} &#10084;</p>
           <HappinessGauge
             label={profile?.partner1Name?.toUpperCase() ?? "ME"}
             value={happiness.partner1}
@@ -188,7 +190,7 @@ export default function Home() {
             ) : (
               <div className="text-xs font-medium text-muted-foreground cursor-pointer flex items-center justify-between group mt-auto"
                 onClick={() => { setTempStatus(profile?.partner1Status || ""); setEditingStatus("partner1"); }}>
-                <span className="line-clamp-2">{profile?.partner1Status || "Set status..."}</span>
+                <span className="line-clamp-2">{profile?.partner1Status || t("home_set_status")}</span>
                 <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
@@ -204,7 +206,7 @@ export default function Home() {
             ) : (
               <div className="text-xs font-medium text-muted-foreground cursor-pointer flex items-center justify-between group mt-auto"
                 onClick={() => { setTempStatus(profile?.partner2Status || ""); setEditingStatus("partner2"); }}>
-                <span className="line-clamp-2">{profile?.partner2Status || "Set status..."}</span>
+                <span className="line-clamp-2">{profile?.partner2Status || t("home_set_status")}</span>
                 <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
@@ -219,7 +221,7 @@ export default function Home() {
                 <CheckSquare className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">TODOS</p>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_todos")}</p>
                 <p className="text-xs font-bold text-muted-foreground">{summary?.todoDoneCount ?? 0}/{summary?.todoCount ?? 0}</p>
               </div>
             </div>
@@ -230,7 +232,7 @@ export default function Home() {
                 <Target className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">GOALS</p>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_goals")}</p>
                 <p className="text-xs font-bold text-muted-foreground">{summary?.goalDoneCount ?? 0}/{summary?.goalCount ?? 0}</p>
               </div>
             </div>
@@ -241,8 +243,8 @@ export default function Home() {
                 <Gift className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">WISHLIST</p>
-                <p className="text-xs font-bold text-muted-foreground">{summary?.wishlistCount ?? 0} items</p>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_wishlist")}</p>
+                <p className="text-xs font-bold text-muted-foreground">{t("items_count")(summary?.wishlistCount ?? 0)}</p>
               </div>
             </div>
           </Link>
@@ -252,7 +254,7 @@ export default function Home() {
                 <Map className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">BUCKET</p>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_bucket")}</p>
                 <p className="text-xs font-bold text-muted-foreground">{summary?.bucketDoneCount ?? 0}/{summary?.bucketCount ?? 0}</p>
               </div>
             </div>
@@ -263,7 +265,7 @@ export default function Home() {
         <div className="space-y-3 pt-2">
           <div className="flex items-center gap-2 px-1">
             <CalendarDays className="w-4 h-4 text-[#FF7043]" />
-            <h2 className="font-pixel text-[10px] text-foreground">NEXT EVENT</h2>
+            <h2 className="font-pixel text-[10px] text-foreground">{t("home_next_event")}</h2>
           </div>
           {summary?.upcomingEvents?.length ? (
             <div className="pixel-card p-4 flex gap-4 items-center bg-[#FF7043] text-[#FFF8F0] border-[#a8462a]"
@@ -288,7 +290,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="pixel-card p-6 text-center border-dashed">
-              <p className="font-pixel text-[9px] text-muted-foreground">NO EVENTS PLANNED</p>
+              <p className="font-pixel text-[9px] text-muted-foreground">{t("home_no_events")}</p>
             </div>
           )}
         </div>

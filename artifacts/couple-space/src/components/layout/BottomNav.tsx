@@ -1,15 +1,17 @@
 import { Link, useLocation } from "wouter";
 import { Home, Calendar, CheckSquare, Target, Menu } from "lucide-react";
+import { useLang } from "@/lib/i18n";
 
 export function BottomNav() {
   const [location] = useLocation();
+  const { t } = useLang();
 
   const links = [
-    { href: "/calendar", icon: Calendar, label: "Dates" },
-    { href: "/todos", icon: CheckSquare, label: "Todos" },
-    { href: "/", icon: Home, label: "Home", isCenter: true },
-    { href: "/goals", icon: Target, label: "Goals" },
-    { href: "/more", icon: Menu, label: "More" },
+    { href: "/calendar", icon: Calendar, label: t("nav_dates") },
+    { href: "/todos", icon: CheckSquare, label: t("nav_todos") },
+    { href: "/", icon: Home, label: t("nav_home"), isCenter: true },
+    { href: "/goals", icon: Target, label: t("nav_goals") },
+    { href: "/more", icon: Menu, label: t("nav_more") },
   ];
 
   return (
@@ -28,7 +30,7 @@ export function BottomNav() {
                       ? 'bg-[#F4623A] border-[#fde8e0] shadow-[0_4px_0_#a85f4e] -translate-y-1'
                       : 'bg-[#e8876e] border-[#F0B7AA] text-[#fde8e0] shadow-[0_2px_0_#a85f4e]'
                     }`}>
-                    <Icon className={`w-6 h-6 ${isActive ? 'text-[#fde8e0]' : 'text-[#fde8e0]'}`} />
+                    <Icon className="w-6 h-6 text-[#fde8e0]" />
                   </div>
                   <span className={`text-[8px] font-pixel mt-2 ${isActive ? 'text-[#8b3a25]' : 'text-[#7a3520]'}`}>
                     {label}
