@@ -3,7 +3,7 @@ import { useGetProfile, useGetSummary, useUpdateStatus, getGetProfileQueryKey } 
 import { useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { CheckSquare, Target, CalendarDays, Edit2 } from "lucide-react";
+import { CheckSquare, Target, CalendarDays, Edit2, Gift, Map } from "lucide-react";
 import { Link } from "wouter";
 import heroImg from "@assets/ChatGPT_Image_2026년_6월_22일_오전_08_45_49_1782085558954.png";
 import { HappinessGauge } from "@/components/HappinessGauge";
@@ -232,6 +232,28 @@ export default function Home() {
               <div>
                 <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">GOALS</p>
                 <p className="text-xs font-bold text-muted-foreground">{summary?.goalDoneCount ?? 0}/{summary?.goalCount ?? 0}</p>
+              </div>
+            </div>
+          </Link>
+          <Link href="/wishlist">
+            <div className="pixel-card p-4 flex items-center gap-3 cursor-pointer active:translate-y-1 transition-transform">
+              <div className="w-10 h-10 rounded bg-[#F2526A] text-[#FFF8F0] pixel-border flex items-center justify-center shrink-0">
+                <Gift className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">WISHLIST</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary?.wishlistCount ?? 0} items</p>
+              </div>
+            </div>
+          </Link>
+          <Link href="/bucketlist">
+            <div className="pixel-card p-4 flex items-center gap-3 cursor-pointer active:translate-y-1 transition-transform">
+              <div className="w-10 h-10 rounded bg-[#4CAF78] text-[#FFF8F0] pixel-border flex items-center justify-center shrink-0">
+                <Map className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">BUCKET</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary?.bucketDoneCount ?? 0}/{summary?.bucketCount ?? 0}</p>
               </div>
             </div>
           </Link>
