@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Trash2, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLang } from "@/lib/i18n";
+import { ColorPicker, DEFAULT_ITEM_COLOR } from "@/components/ColorPicker";
 
 export default function GoalsPage() {
   const { t } = useLang();
@@ -23,6 +24,7 @@ export default function GoalsPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newNote, setNewNote] = useState("");
   const [newCategory, setNewCategory] = useState("");
+  const [newColor, setNewColor] = useState(DEFAULT_ITEM_COLOR);
 
   const handleToggle = (id: number, completed: boolean) => {
     updateGoal.mutate({ id, data: { completed: !completed } }, {
@@ -47,11 +49,11 @@ export default function GoalsPage() {
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
-    createGoal.mutate({ data: { title: newTitle, note: newNote, category: newCategory } }, {
+    createGoal.mutate({ data: { title: newTitle, note: newNote, category: newCategory, color: newColor } }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getListGoalsQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-        setIsOpen(false); setNewTitle(""); setNewNote(""); setNewCategory("");
+        setIsOpen(false); setNewTitle(""); setNewNote(""); setNewCategory(""); setNewColor(DEFAULT_ITEM_COLOR);
         toast({ title: t("goals_set") });
       }
     });
@@ -85,6 +87,7 @@ export default function GoalsPage() {
               <Input placeholder={t("goals_ph")} value={newTitle} onChange={e => setNewTitle(e.target.value)} className="pixel-border font-sans font-medium text-sm" autoFocus />
               <Input placeholder={t("goals_category_ph")} value={newCategory} onChange={e => setNewCategory(e.target.value)} className="pixel-border font-sans text-sm" />
               <Input placeholder={t("goals_details_ph")} value={newNote} onChange={e => setNewNote(e.target.value)} className="pixel-border font-sans text-sm" />
+              <ColorPicker value={newColor} onChange={setNewColor} label={t("color_label") as string} />
               <Button type="submit" className="w-full pixel-btn h-12 text-xs" disabled={!newTitle.trim() || createGoal.isPending}>
                 {createGoal.isPending ? t("goals_saving") : t("goals_commit")}
               </Button>
@@ -101,7 +104,7 @@ export default function GoalsPage() {
       ) : (
         <div className="space-y-6 animate-stagger">
           {goals.map(goal => (
-            <div key={goal.id} className={`pixel-card p-5 relative overflow-hidden transition-all duration-300 ${goal.completed ? 'bg-[#4CAF78] text-[#FFF8F0] border-border' : ''}`}>
+            <div key={goal.id} className={`pixel-card p-5 relative overflow-hidden transition-all duration-300 ${goal.completed ? 'opacity-70' : ''}`} style={{ backgroundColor: goal.color ?? undefined }}>
               <div className="relative z-10 flex gap-4">
                 <button onClick={() => handleToggle(goal.id, goal.completed)}
                   className={`w-10 h-10 shrink-0 rounded pixel-border flex items-center justify-center transition-colors ${goal.completed ? 'bg-[#FFAB91] text-[#4A2518]' : 'bg-card-foreground text-card hover:bg-[#FF7043] hover:text-[#FFF8F0]'}`}>
@@ -111,8 +114,8 @@ export default function GoalsPage() {
                   {goal.category && (
                     <span className="inline-block px-2 py-1 bg-card-foreground text-card font-pixel text-[6px] rounded-sm pixel-border mb-3">{goal.category}</span>
                   )}
-                  <h3 className={`font-sans font-bold text-lg tracking-wide leading-tight ${goal.completed ? 'text-[#1A1035]' : 'text-card-foreground'}`}>{goal.title}</h3>
-                  {goal.note && <p className={`text-sm font-medium mt-1 line-clamp-2 ${goal.completed ? 'text-[#1A1035]/80' : 'text-muted-foreground'}`}>{goal.note}</p>}
+                  <h3 className={`font-sans font-bold text-lg tracking-wide leading-tight ${goal.completed ? 'text-card-foreground line-through' : 'text-card-foreground'}`}>{goal.title}</h3>
+                  {goal.note && <p className={`text-sm font-medium mt-1 line-clamp-2 ${goal.completed ? 'text-muted-foreground/80' : 'text-muted-foreground'}`}>{goal.note}</p>}
                 </div>
                 <Button variant="ghost" size="icon" onClick={() => handleDelete(goal.id)}
                   className={`${goal.completed ? 'text-[#1A1035] hover:bg-[#1A1035]/20' : 'text-muted-foreground hover:bg-destructive/10 hover:text-destructive'} shrink-0 h-8 w-8`}>

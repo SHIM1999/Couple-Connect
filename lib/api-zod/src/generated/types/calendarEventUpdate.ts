@@ -11,5 +11,6 @@ export interface CalendarEventUpdate {
   date?: string;
   note?: string;
   emoji?: string;
+  color?: string;
   isAnniversary?: boolean;
 }

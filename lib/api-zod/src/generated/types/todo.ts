@@ -13,6 +13,8 @@ export interface Todo {
   /** @nullable */
   note?: string | null;
   /** @nullable */
+  color?: string | null;
+  /** @nullable */
   addedBy?: string | null;
   createdAt: string;
 }

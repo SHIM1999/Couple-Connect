@@ -10,6 +10,7 @@ export interface WishItemUpdate {
   title?: string;
   note?: string;
   link?: string;
+  color?: string;
   addedBy?: string;
   purchased?: boolean;
 }

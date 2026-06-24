@@ -12,4 +12,5 @@ export interface GoalUpdate {
   note?: string;
   targetDate?: string;
   category?: string;
+  color?: string;
 }

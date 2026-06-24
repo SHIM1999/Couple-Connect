@@ -10,5 +10,6 @@ export interface TodoInput {
   /** @minLength 1 */
   title: string;
   note?: string;
+  color?: string;
   addedBy?: string;
 }

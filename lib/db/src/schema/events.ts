@@ -9,6 +9,7 @@ export const eventsTable = pgTable("events", {
   date: text("date").notNull(),
   note: text("note"),
   emoji: text("emoji"),
+  color: text("color"),
   isAnniversary: boolean("is_anniversary").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

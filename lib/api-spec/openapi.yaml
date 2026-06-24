@@ -554,6 +554,8 @@ components:
           type: boolean
         note:
           type: ["string", "null"]
+        color:
+          type: ["string", "null"]
         addedBy:
           type: ["string", "null"]
         createdAt:
@@ -568,6 +570,8 @@ components:
           minLength: 1
         note:
           type: string
+        color:
+          type: string
         addedBy:
           type: string
 
@@ -580,6 +584,8 @@ components:
         completed:
           type: boolean
         note:
+          type: string
+        color:
           type: string
         addedBy:
           type: string
@@ -601,6 +607,8 @@ components:
           type: ["string", "null"]
         category:
           type: ["string", "null"]
+        color:
+          type: ["string", "null"]
         createdAt:
           type: string
 
@@ -617,6 +625,8 @@ components:
           type: string
         category:
           type: string
+        color:
+          type: string
 
     GoalUpdate:
       type: object
@@ -631,6 +641,8 @@ components:
           type: string
         category:
           type: string
+        color:
+          type: string
 
     # ── Wish list ────────────────────────────────────────────────────────────
     WishItem:
@@ -644,6 +656,8 @@ components:
         note:
           type: ["string", "null"]
         link:
+          type: ["string", "null"]
+        color:
           type: ["string", "null"]
         addedBy:
           type: ["string", "null"]
@@ -663,6 +677,8 @@ components:
           type: string
         link:
           type: string
+        color:
+          type: string
         addedBy:
           type: string
 
@@ -674,6 +690,8 @@ components:
         note:
           type: string
         link:
+          type: string
+        color:
           type: string
         addedBy:
           type: string
@@ -695,6 +713,8 @@ components:
           type: ["string", "null"]
         targetDate:
           type: ["string", "null"]
+        color:
+          type: ["string", "null"]
         createdAt:
           type: string
 
@@ -709,6 +729,8 @@ components:
           type: string
         targetDate:
           type: string
+        color:
+          type: string
 
     BucketItemUpdate:
       type: object
@@ -720,6 +742,8 @@ components:
         note:
           type: string
         targetDate:
+          type: string
+        color:
           type: string
 
     # ── Calendar events ──────────────────────────────────────────────────────
@@ -736,6 +760,8 @@ components:
         note:
           type: ["string", "null"]
         emoji:
+          type: ["string", "null"]
+        color:
           type: ["string", "null"]
         isAnniversary:
           type: boolean
@@ -755,6 +781,8 @@ components:
           type: string
         emoji:
           type: string
+        color:
+          type: string
         isAnniversary:
           type: boolean
 
@@ -768,6 +796,8 @@ components:
         note:
           type: string
         emoji:
+          type: string
+        color:
           type: string
         isAnniversary:
           type: boolean

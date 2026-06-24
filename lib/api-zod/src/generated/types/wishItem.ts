@@ -14,6 +14,8 @@ export interface WishItem {
   /** @nullable */
   link?: string | null;
   /** @nullable */
+  color?: string | null;
+  /** @nullable */
   addedBy?: string | null;
   purchased?: boolean;
   createdAt: string;

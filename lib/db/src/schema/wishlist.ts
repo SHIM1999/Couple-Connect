@@ -8,6 +8,7 @@ export const wishlistTable = pgTable("wishlist", {
   title: text("title").notNull(),
   note: text("note"),
   link: text("link"),
+  color: text("color"),
   addedBy: text("added_by"),
   purchased: boolean("purchased").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

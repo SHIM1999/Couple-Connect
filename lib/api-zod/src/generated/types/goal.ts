@@ -16,5 +16,7 @@ export interface Goal {
   targetDate?: string | null;
   /** @nullable */
   category?: string | null;
+  /** @nullable */
+  color?: string | null;
   createdAt: string;
 }

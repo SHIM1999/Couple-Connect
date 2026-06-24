@@ -12,4 +12,5 @@ export interface GoalInput {
   note?: string;
   targetDate?: string;
   category?: string;
+  color?: string;
 }

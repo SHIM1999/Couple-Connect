@@ -14,5 +14,7 @@ export interface BucketItem {
   note?: string | null;
   /** @nullable */
   targetDate?: string | null;
+  /** @nullable */
+  color?: string | null;
   createdAt: string;
 }

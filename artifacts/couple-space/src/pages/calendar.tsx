@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Trash2, CalendarDays } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLang } from "@/lib/i18n";
+import { ColorPicker, DEFAULT_ITEM_COLOR } from "@/components/ColorPicker";
 
 export default function CalendarPage() {
   const { t } = useLang();
@@ -29,6 +30,7 @@ export default function CalendarPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newDate, setNewDate] = useState("");
   const [newNote, setNewNote] = useState("");
+  const [newColor, setNewColor] = useState(DEFAULT_ITEM_COLOR);
 
   const handleDeleteEvent = (id: number) => {
     deleteEvent.mutate({ id }, {
@@ -43,11 +45,11 @@ export default function CalendarPage() {
   const handleAddEvent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim() || !newDate) return;
-    createEvent.mutate({ data: { title: newTitle, date: newDate, note: newNote } }, {
+    createEvent.mutate({ data: { title: newTitle, date: newDate, note: newNote, color: newColor } }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getListEventsQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-        setEventOpen(false); setNewTitle(""); setNewDate(""); setNewNote("");
+        setEventOpen(false); setNewTitle(""); setNewDate(""); setNewNote(""); setNewColor(DEFAULT_ITEM_COLOR);
         toast({ title: t("cal_event_saved") });
       }
     });
@@ -85,6 +87,7 @@ export default function CalendarPage() {
               <Input placeholder={t("cal_event_name_ph")} value={newTitle} onChange={e => setNewTitle(e.target.value)} className="pixel-border font-sans font-medium text-sm" autoFocus />
               <Input type="date" value={newDate} onChange={e => setNewDate(e.target.value)} className="pixel-border font-sans text-sm" required />
               <Input placeholder={t("cal_details_ph")} value={newNote} onChange={e => setNewNote(e.target.value)} className="pixel-border font-sans text-sm" />
+              <ColorPicker value={newColor} onChange={setNewColor} label={t("color_label") as string} />
               <Button type="submit" className="w-full pixel-btn h-12 text-xs" disabled={!newTitle.trim() || !newDate || createEvent.isPending}>
                 {createEvent.isPending ? t("cal_saving") : t("cal_save_event")}
               </Button>
@@ -128,7 +131,7 @@ export default function CalendarPage() {
                 </div>
                 <div className="flex-1 space-y-3 pt-1">
                   {eventsByDate[date].map(event => (
-                    <div key={event.id} className="pixel-card p-4 flex gap-3 relative overflow-hidden">
+                    <div key={event.id} className="pixel-card p-4 flex gap-3 relative overflow-hidden" style={{ backgroundColor: event.color ?? undefined }}>
                       {event.isAnniversary && (
                         <div className="absolute top-0 right-0 bg-[#FF6B81] text-[#FFF8F0] px-2 py-1 font-pixel text-[6px] border-b-2 border-l-2 border-border">
                           {t("cal_anniversary_badge")}

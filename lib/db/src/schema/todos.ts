@@ -8,6 +8,7 @@ export const todosTable = pgTable("todos", {
   title: text("title").notNull(),
   completed: boolean("completed").notNull().default(false),
   note: text("note"),
+  color: text("color"),
   addedBy: text("added_by"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

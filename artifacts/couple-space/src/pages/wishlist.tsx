@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Trash2, ExternalLink, Gift } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLang } from "@/lib/i18n";
+import { ColorPicker, DEFAULT_ITEM_COLOR } from "@/components/ColorPicker";
 
 export default function WishlistPage() {
   const { t } = useLang();
@@ -23,6 +24,7 @@ export default function WishlistPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newNote, setNewNote] = useState("");
   const [newLink, setNewLink] = useState("");
+  const [newColor, setNewColor] = useState(DEFAULT_ITEM_COLOR);
 
   const handleToggle = (id: number, purchased: boolean | undefined) => {
     updateItem.mutate({ id, data: { purchased: !purchased } }, {
@@ -46,11 +48,11 @@ export default function WishlistPage() {
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
-    createItem.mutate({ data: { title: newTitle, note: newNote, link: newLink } }, {
+    createItem.mutate({ data: { title: newTitle, note: newNote, link: newLink, color: newColor } }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getListWishlistQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-        setIsOpen(false); setNewTitle(""); setNewNote(""); setNewLink("");
+        setIsOpen(false); setNewTitle(""); setNewNote(""); setNewLink(""); setNewColor(DEFAULT_ITEM_COLOR);
         toast({ title: t("wish_added") });
       }
     });
@@ -84,6 +86,7 @@ export default function WishlistPage() {
               <Input placeholder={t("wish_item_ph")} value={newTitle} onChange={e => setNewTitle(e.target.value)} className="pixel-border font-sans font-medium text-sm" autoFocus />
               <Input placeholder={t("wish_link_ph")} value={newLink} onChange={e => setNewLink(e.target.value)} className="pixel-border font-sans text-sm" />
               <Input placeholder={t("wish_details_ph")} value={newNote} onChange={e => setNewNote(e.target.value)} className="pixel-border font-sans text-sm" />
+              <ColorPicker value={newColor} onChange={setNewColor} label={t("color_label") as string} />
               <Button type="submit" className="w-full pixel-btn h-12 text-xs bg-[#FF6B81]" disabled={!newTitle.trim() || createItem.isPending}>
                 {createItem.isPending ? t("wish_saving") : t("wish_save")}
               </Button>
@@ -99,7 +102,7 @@ export default function WishlistPage() {
       ) : (
         <div className="space-y-4 animate-stagger">
           {items.map(item => (
-            <div key={item.id} className={`pixel-card p-4 flex gap-4 transition-all duration-300 ${item.purchased ? 'opacity-60 grayscale-[0.5]' : ''}`}>
+            <div key={item.id} className={`pixel-card p-4 flex gap-4 transition-all duration-300 ${item.purchased ? 'opacity-60 grayscale-[0.5]' : ''}`} style={{ backgroundColor: item.color ?? undefined }}>
               <button onClick={() => handleToggle(item.id, item.purchased)}
                 className={`w-12 h-12 shrink-0 rounded pixel-border flex items-center justify-center transition-colors ${item.purchased ? 'bg-[#FF7043] text-[#FFF8F0]' : 'bg-card-foreground text-card hover:bg-[#FF7043] hover:text-[#FFF8F0]'}`}>
                 <Gift className="w-6 h-6" />

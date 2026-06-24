@@ -11,5 +11,6 @@ export interface TodoUpdate {
   title?: string;
   completed?: boolean;
   note?: string;
+  color?: string;
   addedBy?: string;
 }

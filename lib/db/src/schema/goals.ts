@@ -10,6 +10,7 @@ export const goalsTable = pgTable("goals", {
   note: text("note"),
   targetDate: text("target_date"),
   category: text("category"),
+  color: text("color"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

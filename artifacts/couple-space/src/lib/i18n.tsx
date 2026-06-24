@@ -14,6 +14,7 @@ const translations = {
     home_wishlist: "WISHLIST", home_bucket: "BUCKET",
     home_next_event: "NEXT EVENT", home_no_events: "NO EVENTS PLANNED", home_set_status: "Set status...",
     items_count: (n: number) => `${n} items`,
+    color_label: "COLOR",
     // Settings
     settings_title: "OPTIONS", settings_space_title: "SPACE TITLE",
     settings_space_title_ph: "e.g. Our Little Corner", settings_player1: "PLAYER 1 NAME",
@@ -68,6 +69,7 @@ const translations = {
     home_wishlist: "위시리스트", home_bucket: "버킷리스트",
     home_next_event: "다음 일정", home_no_events: "예정된 일정 없음", home_set_status: "상태 설정...",
     items_count: (n: number) => `${n}개`,
+    color_label: "색상",
     // Settings
     settings_title: "설정", settings_space_title: "공간 이름",
     settings_space_title_ph: "예) 우리만의 공간", settings_player1: "플레이어 1 이름",

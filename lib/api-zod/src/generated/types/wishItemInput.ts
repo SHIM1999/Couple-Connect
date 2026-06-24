@@ -11,5 +11,6 @@ export interface WishItemInput {
   title: string;
   note?: string;
   link?: string;
+  color?: string;
   addedBy?: string;
 }

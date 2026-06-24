@@ -53,6 +53,8 @@ export interface Todo {
   /** @nullable */
   note?: string | null;
   /** @nullable */
+  color?: string | null;
+  /** @nullable */
   addedBy?: string | null;
   createdAt: string;
 }
@@ -61,6 +63,7 @@ export interface TodoInput {
   /** @minLength 1 */
   title: string;
   note?: string;
+  color?: string;
   addedBy?: string;
 }
 
@@ -69,6 +72,7 @@ export interface TodoUpdate {
   title?: string;
   completed?: boolean;
   note?: string;
+  color?: string;
   addedBy?: string;
 }
 
@@ -82,6 +86,8 @@ export interface Goal {
   targetDate?: string | null;
   /** @nullable */
   category?: string | null;
+  /** @nullable */
+  color?: string | null;
   createdAt: string;
 }
 
@@ -91,6 +97,7 @@ export interface GoalInput {
   note?: string;
   targetDate?: string;
   category?: string;
+  color?: string;
 }
 
 export interface GoalUpdate {
@@ -99,6 +106,7 @@ export interface GoalUpdate {
   note?: string;
   targetDate?: string;
   category?: string;
+  color?: string;
 }
 
 export interface WishItem {
@@ -108,6 +116,8 @@ export interface WishItem {
   note?: string | null;
   /** @nullable */
   link?: string | null;
+  /** @nullable */
+  color?: string | null;
   /** @nullable */
   addedBy?: string | null;
   purchased?: boolean;
@@ -119,6 +129,7 @@ export interface WishItemInput {
   title: string;
   note?: string;
   link?: string;
+  color?: string;
   addedBy?: string;
 }
 
@@ -126,6 +137,7 @@ export interface WishItemUpdate {
   title?: string;
   note?: string;
   link?: string;
+  color?: string;
   addedBy?: string;
   purchased?: boolean;
 }
@@ -138,6 +150,8 @@ export interface BucketItem {
   note?: string | null;
   /** @nullable */
   targetDate?: string | null;
+  /** @nullable */
+  color?: string | null;
   createdAt: string;
 }
 
@@ -146,6 +160,7 @@ export interface BucketItemInput {
   title: string;
   note?: string;
   targetDate?: string;
+  color?: string;
 }
 
 export interface BucketItemUpdate {
@@ -153,6 +168,7 @@ export interface BucketItemUpdate {
   completed?: boolean;
   note?: string;
   targetDate?: string;
+  color?: string;
 }
 
 export interface CalendarEvent {
@@ -163,6 +179,8 @@ export interface CalendarEvent {
   note?: string | null;
   /** @nullable */
   emoji?: string | null;
+  /** @nullable */
+  color?: string | null;
   isAnniversary?: boolean;
   createdAt: string;
 }
@@ -173,6 +191,7 @@ export interface CalendarEventInput {
   date: string;
   note?: string;
   emoji?: string;
+  color?: string;
   isAnniversary?: boolean;
 }
 
@@ -181,6 +200,7 @@ export interface CalendarEventUpdate {
   date?: string;
   note?: string;
   emoji?: string;
+  color?: string;
   isAnniversary?: boolean;
 }
 

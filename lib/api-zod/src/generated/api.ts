@@ -105,6 +105,7 @@ export const ListTodosResponseItem = zod.object({
   "title": zod.string(),
   "completed": zod.boolean(),
   "note": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "addedBy": zod.string().nullish(),
   "createdAt": zod.string()
 })
@@ -120,6 +121,7 @@ export const ListTodosResponse = zod.array(ListTodosResponseItem)
 export const CreateTodoBody = zod.object({
   "title": zod.string().min(1),
   "note": zod.string().optional(),
+  "color": zod.string().optional(),
   "addedBy": zod.string().optional()
 })
 
@@ -138,6 +140,7 @@ export const UpdateTodoBody = zod.object({
   "title": zod.string().min(1).optional(),
   "completed": zod.boolean().optional(),
   "note": zod.string().optional(),
+  "color": zod.string().optional(),
   "addedBy": zod.string().optional()
 })
 
@@ -146,6 +149,7 @@ export const UpdateTodoResponse = zod.object({
   "title": zod.string(),
   "completed": zod.boolean(),
   "note": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "addedBy": zod.string().nullish(),
   "createdAt": zod.string()
 })
@@ -169,6 +173,7 @@ export const ListGoalsResponseItem = zod.object({
   "note": zod.string().nullish(),
   "targetDate": zod.string().nullish(),
   "category": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "createdAt": zod.string()
 })
 export const ListGoalsResponse = zod.array(ListGoalsResponseItem)
@@ -184,7 +189,8 @@ export const CreateGoalBody = zod.object({
   "title": zod.string().min(1),
   "note": zod.string().optional(),
   "targetDate": zod.string().optional(),
-  "category": zod.string().optional()
+  "category": zod.string().optional(),
+  "color": zod.string().optional()
 })
 
 
@@ -200,7 +206,8 @@ export const UpdateGoalBody = zod.object({
   "completed": zod.boolean().optional(),
   "note": zod.string().optional(),
   "targetDate": zod.string().optional(),
-  "category": zod.string().optional()
+  "category": zod.string().optional(),
+  "color": zod.string().optional()
 })
 
 export const UpdateGoalResponse = zod.object({
@@ -210,6 +217,7 @@ export const UpdateGoalResponse = zod.object({
   "note": zod.string().nullish(),
   "targetDate": zod.string().nullish(),
   "category": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "createdAt": zod.string()
 })
 
@@ -230,6 +238,7 @@ export const ListWishlistResponseItem = zod.object({
   "title": zod.string(),
   "note": zod.string().nullish(),
   "link": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "addedBy": zod.string().nullish(),
   "purchased": zod.boolean().optional(),
   "createdAt": zod.string()
@@ -247,6 +256,7 @@ export const CreateWishItemBody = zod.object({
   "title": zod.string().min(1),
   "note": zod.string().optional(),
   "link": zod.string().optional(),
+  "color": zod.string().optional(),
   "addedBy": zod.string().optional()
 })
 
@@ -262,6 +272,7 @@ export const UpdateWishItemBody = zod.object({
   "title": zod.string().optional(),
   "note": zod.string().optional(),
   "link": zod.string().optional(),
+  "color": zod.string().optional(),
   "addedBy": zod.string().optional(),
   "purchased": zod.boolean().optional()
 })
@@ -271,6 +282,7 @@ export const UpdateWishItemResponse = zod.object({
   "title": zod.string(),
   "note": zod.string().nullish(),
   "link": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "addedBy": zod.string().nullish(),
   "purchased": zod.boolean().optional(),
   "createdAt": zod.string()
@@ -294,6 +306,7 @@ export const ListBucketListResponseItem = zod.object({
   "completed": zod.boolean(),
   "note": zod.string().nullish(),
   "targetDate": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "createdAt": zod.string()
 })
 export const ListBucketListResponse = zod.array(ListBucketListResponseItem)
@@ -308,7 +321,8 @@ export const ListBucketListResponse = zod.array(ListBucketListResponseItem)
 export const CreateBucketItemBody = zod.object({
   "title": zod.string().min(1),
   "note": zod.string().optional(),
-  "targetDate": zod.string().optional()
+  "targetDate": zod.string().optional(),
+  "color": zod.string().optional()
 })
 
 
@@ -323,7 +337,8 @@ export const UpdateBucketItemBody = zod.object({
   "title": zod.string().optional(),
   "completed": zod.boolean().optional(),
   "note": zod.string().optional(),
-  "targetDate": zod.string().optional()
+  "targetDate": zod.string().optional(),
+  "color": zod.string().optional()
 })
 
 export const UpdateBucketItemResponse = zod.object({
@@ -332,6 +347,7 @@ export const UpdateBucketItemResponse = zod.object({
   "completed": zod.boolean(),
   "note": zod.string().nullish(),
   "targetDate": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "createdAt": zod.string()
 })
 
@@ -358,6 +374,7 @@ export const ListEventsResponseItem = zod.object({
   "date": zod.string(),
   "note": zod.string().nullish(),
   "emoji": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "isAnniversary": zod.boolean().optional(),
   "createdAt": zod.string()
 })
@@ -375,6 +392,7 @@ export const CreateEventBody = zod.object({
   "date": zod.string(),
   "note": zod.string().optional(),
   "emoji": zod.string().optional(),
+  "color": zod.string().optional(),
   "isAnniversary": zod.boolean().optional()
 })
 
@@ -391,6 +409,7 @@ export const UpdateEventBody = zod.object({
   "date": zod.string().optional(),
   "note": zod.string().optional(),
   "emoji": zod.string().optional(),
+  "color": zod.string().optional(),
   "isAnniversary": zod.boolean().optional()
 })
 
@@ -400,6 +419,7 @@ export const UpdateEventResponse = zod.object({
   "date": zod.string(),
   "note": zod.string().nullish(),
   "emoji": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "isAnniversary": zod.boolean().optional(),
   "createdAt": zod.string()
 })
@@ -430,6 +450,7 @@ export const GetSummaryResponse = zod.object({
   "date": zod.string(),
   "note": zod.string().nullish(),
   "emoji": zod.string().nullish(),
+  "color": zod.string().nullish(),
   "isAnniversary": zod.boolean().optional(),
   "createdAt": zod.string()
 }))

@@ -9,6 +9,7 @@ export const bucketlistTable = pgTable("bucketlist", {
   completed: boolean("completed").notNull().default(false),
   note: text("note"),
   targetDate: text("target_date"),
+  color: text("color"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

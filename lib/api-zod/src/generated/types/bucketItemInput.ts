@@ -11,4 +11,5 @@ export interface BucketItemInput {
   title: string;
   note?: string;
   targetDate?: string;
+  color?: string;
 }

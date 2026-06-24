@@ -14,6 +14,8 @@ export interface CalendarEvent {
   note?: string | null;
   /** @nullable */
   emoji?: string | null;
+  /** @nullable */
+  color?: string | null;
   isAnniversary?: boolean;
   createdAt: string;
 }

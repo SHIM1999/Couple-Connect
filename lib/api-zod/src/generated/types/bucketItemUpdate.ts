@@ -11,4 +11,5 @@ export interface BucketItemUpdate {
   completed?: boolean;
   note?: string;
   targetDate?: string;
+  color?: string;
 }

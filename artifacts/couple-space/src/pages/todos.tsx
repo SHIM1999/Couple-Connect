@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLang } from "@/lib/i18n";
+import { ColorPicker, DEFAULT_ITEM_COLOR } from "@/components/ColorPicker";
 
 export default function TodosPage() {
   const { t } = useLang();
@@ -22,6 +23,7 @@ export default function TodosPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newNote, setNewNote] = useState("");
+  const [newColor, setNewColor] = useState(DEFAULT_ITEM_COLOR);
 
   const handleToggle = (id: number, completed: boolean) => {
     updateTodo.mutate({ id, data: { completed: !completed } }, {
@@ -45,11 +47,11 @@ export default function TodosPage() {
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
-    createTodo.mutate({ data: { title: newTitle, note: newNote } }, {
+    createTodo.mutate({ data: { title: newTitle, note: newNote, color: newColor } }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getListTodosQueryKey() });
         queryClient.invalidateQueries({ queryKey: getGetSummaryQueryKey() });
-        setIsOpen(false); setNewTitle(""); setNewNote("");
+        setIsOpen(false); setNewTitle(""); setNewNote(""); setNewColor(DEFAULT_ITEM_COLOR);
         toast({ title: t("todos_added") });
       }
     });
@@ -59,7 +61,7 @@ export default function TodosPage() {
   const completedTodos = todos?.filter(t => t.completed) ?? [];
 
   const TodoCard = ({ todo }: { todo: NonNullable<typeof todos>[0] }) => (
-    <div className={`pixel-card p-4 flex items-start gap-4 transition-all duration-300 ${todo.completed ? 'opacity-50' : ''}`}>
+    <div className={`pixel-card p-4 flex items-start gap-4 transition-all duration-300 ${todo.completed ? 'opacity-50' : ''}`} style={{ backgroundColor: todo.color ?? undefined }}>
       <div className="pt-1 shrink-0">
         <input type="checkbox" className="pixel-checkbox cursor-pointer" checked={todo.completed} onChange={() => handleToggle(todo.id, todo.completed)} />
       </div>
@@ -91,6 +93,7 @@ export default function TodosPage() {
             <form onSubmit={handleAdd} className="space-y-4">
               <Input placeholder={t("todos_ph")} value={newTitle} onChange={e => setNewTitle(e.target.value)} className="pixel-border font-sans font-medium text-sm" autoFocus />
               <Input placeholder={t("todos_details_ph")} value={newNote} onChange={e => setNewNote(e.target.value)} className="pixel-border font-sans text-sm" />
+              <ColorPicker value={newColor} onChange={setNewColor} label={t("color_label") as string} />
               <Button type="submit" className="w-full pixel-btn h-12 text-xs" disabled={!newTitle.trim() || createTodo.isPending}>
                 {createTodo.isPending ? t("todos_saving") : t("todos_accept")}
               </Button>
