@@ -3,7 +3,7 @@ services:
     name: couple-connect-api
     runtime: node
     region: singapore
-    buildCommand: corepack enable && corepack prepare pnpm@11.1.2 --activate && pnpm install --ignore-scripts --frozen-lockfile && pnpm --filter @workspace/api-server run build
+    buildCommand: npx --yes pnpm@11.1.2 install --ignore-scripts --frozen-lockfile && npx --yes pnpm@11.1.2 --filter @workspace/api-server run build
     startCommand: node --enable-source-maps ./artifacts/api-server/dist/index.mjs
     envVars:
       - key: DATABASE_URL
