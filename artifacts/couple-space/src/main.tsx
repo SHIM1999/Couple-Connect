@@ -3,8 +3,12 @@ import App from "./App";
 import "./index.css";
 import { setBaseUrl } from "@workspace/api-client-react";
 
-if (import.meta.env.VITE_API_BASE_URL) {
-  setBaseUrl(import.meta.env.VITE_API_BASE_URL as string);
+const apiBaseUrl =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ??
+  (import.meta.env.PROD ? "https://couple-connect-api.onrender.com" : undefined);
+
+if (apiBaseUrl) {
+  setBaseUrl(apiBaseUrl);
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
