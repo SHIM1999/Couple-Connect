@@ -17,6 +17,11 @@ const DEFAULT_JSON_ACCEPT = "application/json, application/problem+json";
 
 let _baseUrl: string | null = null;
 let _authTokenGetter: AuthTokenGetter | null = null;
+let _coupleCodeGetter: (() => string) | null = null;
+
+export function setCoupleCodeGetter(getter: () => string): void {
+  _coupleCodeGetter = getter;
+}
 
 /**
  * Set a base URL that is prepended to every relative request URL
@@ -336,6 +341,7 @@ export async function customFetch<T = unknown>(
   }
 
   const headers = mergeHeaders(isRequest(input) ? input.headers : undefined, headersInit);
+  if (_coupleCodeGetter) headers.set("X-Couple-Code", _coupleCodeGetter());
 
   if (
     typeof init.body === "string" &&

@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { CheckSquare, Target, CalendarDays, Edit2, Gift, Map } from "lucide-react";
 import { Link } from "wouter";
-import heroImg from "@assets/ChatGPT_Image_2026년_6월_22일_오전_08_45_49_1782085558954.png";
+import heroImg from "@/assets/couple-hero.jpg";
 import { HappinessGauge } from "@/components/HappinessGauge";
 import { useLang } from "@/lib/i18n";
 import { apiFetch } from "@/lib/api";
@@ -26,8 +26,8 @@ interface HappinessState {
 }
 
 export default function Home() {
-  const { data: profile, isLoading: profileLoading } = useGetProfile();
-  const { data: summary, isLoading: summaryLoading } = useGetSummary();
+  const { data: profile, isLoading: profileLoading, isError: profileError, refetch: retryProfile } = useGetProfile();
+  const { data: summary, isLoading: summaryLoading, isError: summaryError, refetch: retrySummary } = useGetSummary();
   const updateStatus = useUpdateStatus();
   const queryClient = useQueryClient();
 
@@ -98,21 +98,12 @@ export default function Home() {
   };
   const daysTogether = getDaysTogether();
 
-  if (profileLoading || summaryLoading) {
-    return (
-      <div className="w-full min-h-screen bg-background animate-pulse p-6 space-y-6 pt-64">
-        <Skeleton className="h-32 w-full rounded-lg" />
-        <Skeleton className="h-24 w-full rounded-lg" />
-      </div>
-    );
-  }
-
   return (
     <div className="w-full pb-24">
       {/* FIXED HERO IMAGE */}
       <div className="fixed top-0 left-0 right-0 flex justify-center pointer-events-none" style={{ zIndex: 0 }}>
         <div className="relative w-full max-w-[430px] h-[55vh] min-h-[380px]">
-          <img src={heroImg} alt="Couple pixel art"
+          <img fetchPriority="high" src={heroImg} alt="Couple pixel art"
             className="absolute inset-0 w-full h-full object-cover object-center"
             style={{ imageRendering: "pixelated" }} />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/60 pointer-events-none" />
@@ -163,6 +154,11 @@ export default function Home() {
       <div className="relative z-10 px-5 py-6 space-y-6 pt-12"
         style={{ background: "hsl(var(--background))", borderRadius: "20px 20px 0 0" }}>
 
+        {(profileLoading || summaryLoading) && <p role="status" className="pixel-card p-4 text-sm">{t("connection_loading")}</p>}
+        {(profileError || summaryError) && <div role="alert" className="pixel-card p-4 text-sm">
+          <p>{t("connection_error")}</p>
+          <button className="underline mt-2" onClick={() => { void retryProfile(); void retrySummary(); }}>{t("connection_retry")}</button>
+        </div>}
         {/* HAPPINESS GAUGES */}
         <div className="pixel-card p-4 space-y-4">
           <p className="font-pixel text-[9px] text-foreground text-center">&#10084; {t("home_happiness")} &#10084;</p>
@@ -225,7 +221,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_todos")}</p>
-                <p className="text-xs font-bold text-muted-foreground">{summary?.todoDoneCount ?? 0}/{summary?.todoCount ?? 0}</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary?.todoDoneCount ?? "—"}/{summary?.todoCount ?? "—"}</p>
               </div>
             </div>
           </Link>
@@ -236,7 +232,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_goals")}</p>
-                <p className="text-xs font-bold text-muted-foreground">{summary?.goalDoneCount ?? 0}/{summary?.goalCount ?? 0}</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary?.goalDoneCount ?? "—"}/{summary?.goalCount ?? "—"}</p>
               </div>
             </div>
           </Link>
@@ -247,7 +243,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_wishlist")}</p>
-                <p className="text-xs font-bold text-muted-foreground">{t("items_count")(summary?.wishlistCount ?? 0)}</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary ? t("items_count")(summary.wishlistCount) : "—"}</p>
               </div>
             </div>
           </Link>
@@ -258,7 +254,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="font-pixel text-[8px] text-card-foreground mb-1 leading-tight">{t("home_bucket")}</p>
-                <p className="text-xs font-bold text-muted-foreground">{summary?.bucketDoneCount ?? 0}/{summary?.bucketCount ?? 0}</p>
+                <p className="text-xs font-bold text-muted-foreground">{summary?.bucketDoneCount ?? "—"}/{summary?.bucketCount ?? "—"}</p>
               </div>
             </div>
           </Link>
@@ -270,7 +266,9 @@ export default function Home() {
             <CalendarDays className="w-4 h-4 text-[#FF7043]" />
             <h2 className="font-pixel text-[10px] text-foreground">{t("home_next_event")}</h2>
           </div>
-          {summary?.upcomingEvents?.length ? (
+          {!summary ? (
+            <Skeleton className="h-24 w-full" />
+          ) : summary.upcomingEvents?.length ? (
             <div className="pixel-card p-4 flex gap-4 items-center bg-[#FF7043] text-[#FFF8F0] border-[#a8462a]"
               style={{ boxShadow: "4px 4px 0 #a8462a" }}>
               {(() => {

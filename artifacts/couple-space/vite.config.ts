@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
@@ -12,6 +13,27 @@ export default defineConfig({
   base: basePath,
   plugins: [
     react(),
+    VitePWA({
+      registerType: "prompt",
+      injectRegister: null,
+      includeAssets: ["favicon.svg", "icons/*.png"],
+      manifest: {
+        name: "Couple Connect",
+        short_name: "Couple Connect",
+        description: "Plan together. Grow together.",
+        theme_color: "#F0B7AA",
+        background_color: "#F0B7AA",
+        display: "standalone",
+        start_url: basePath,
+        scope: basePath,
+        icons: [192, 512].map(size => ({ src: `icons/icon-${size}.png`, sizes: `${size}x${size}`, type: "image/png" })),
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,png,jpg,webp,woff2}"],
+        navigateFallbackDenylist: [/^\/api(?:\/|$)/],
+        cleanupOutdatedCaches: true,
+      },
+    }),
     tailwindcss(),
     ...(isDev && isReplit
       ? [
@@ -42,6 +64,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    proxy: { "/api": "http://localhost:5000" },
     port,
     strictPort: true,
     host: "0.0.0.0",

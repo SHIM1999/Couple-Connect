@@ -6,6 +6,11 @@ const STORAGE_KEY = "cc_lang";
 
 const translations = {
   en: {
+    update_ready: "An update is ready. Save your changes before reloading.",
+    update_reload: "Reload", update_later: "Later",
+    connection_loading: "Connecting to your shared space… You can explore while it loads.",
+    connection_error: "Your shared space is unavailable. Check your connection and try again.",
+    connection_retry: "Try again",
     // Nav
     nav_dates: "DATES", nav_todos: "TODOS", nav_home: "HOME", nav_goals: "GOALS", nav_more: "MORE",
     // Home
@@ -61,6 +66,11 @@ const translations = {
     bucket_unlocked: "Adventure unlocked!", bucket_deleted: "Adventure deleted", bucket_added: "Added to Map",
   },
   ko: {
+    update_ready: "업데이트가 준비되었습니다. 새로고침 전에 변경 사항을 저장하세요.",
+    update_reload: "새로고침", update_later: "나중에",
+    connection_loading: "공유 공간에 연결 중입니다. 기다리는 동안 둘러보세요.",
+    connection_error: "공유 공간을 불러올 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+    connection_retry: "다시 시도",
     // Nav
     nav_dates: "일정", nav_todos: "할일", nav_home: "홈", nav_goals: "목표", nav_more: "더보기",
     // Home

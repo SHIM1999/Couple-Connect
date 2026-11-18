@@ -213,6 +213,14 @@ pnpm --filter @workspace/couple-space run build
 firebase deploy --only hosting
 ```
 
+## Startup and PWA behavior
+
+The home shell renders immediately while profile and summary requests load. API requests use the locally stored couple code; failed client requests are not repeatedly retried. Local Vite development proxies `/api` to port 5000.
+
+Production builds generate a web manifest and service worker. After the first successful online visit, the application shell and bundled assets are available offline. Shared data still requires a connection: API responses and writes are not cached or queued. An update banner asks the visitor to save changes before reloading into a new version.
+
+Before publishing, run the workspace typecheck and frontend build, then verify an invite link on two devices, create/edit/delete a test item, and check a repeat launch offline. Test the deployed API after an idle period too: a sleeping backend can still delay shared data even though the interface appears immediately.
+
 ## Mockup Sandbox
 
 `artifacts/mockup-sandbox` is a development-only Replit canvas preview tool. It is not the deployed Couple Connect app.
